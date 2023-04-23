@@ -1,5 +1,7 @@
 
 from .Component import Component
+from .Vector2 import Vector2
+import copy
 
 class Transform(Component):
     def __init__(self, xPos, yPos, width, height):
@@ -8,11 +10,31 @@ class Transform(Component):
         self.width = width
         self.height = height
 
-    def set(self, obj):
-        self.x = obj.x
-        self.y = obj.y
-        self.width = obj.width
-        self.height = obj.height
+    def set(self, transform):
+        self = copy.copy(transform)
 
+    def get_position(self):
+        return (self.x, self.y)
     
-        
+    def get_scale(self):
+        return (self.width, self.height)
+
+    def set_position(self, pos):
+        self.x = pos[0]
+        self.y = pos[1]
+
+    def reset_position(self):
+        self.x, self.y = 0
+
+    def reset_size(self):
+        self.width, self.height = 0
+
+    def get_size(self):
+        return self.scale
+    
+    def repr(self):
+        return f'''\n
+        pos: \n
+        {self.x}
+        {self.y}
+        '''

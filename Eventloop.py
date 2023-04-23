@@ -3,9 +3,10 @@ import pygame, console, delta_time
 from main import WIN
 
 class Eventloop:
-    def __init__(self, events=[]):
+    def __init__(self, physics_world, events=[]):
         self.running = False
         self.events = events
+        self.world = physics_world
 
     def add_event(self, event):
         self.events.append(event)
@@ -21,7 +22,7 @@ class Eventloop:
                     custom_event.hit(event)
 
             if event.type == pygame.VIDEORESIZE:
-                WIN.value.videoresize()
+                WIN.videoresize()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_0:
@@ -35,6 +36,8 @@ class Eventloop:
 
         delta_time.update_delta_time()
         console.draw_console()
-        
+        self.world.Step(1.0 / 60, 6, 2)
+        self.world.ClearForces()
+
         pygame.display.update()
 

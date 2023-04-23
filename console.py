@@ -28,32 +28,31 @@ __ct = Transform(*console_pos, *console_size)
 font_size = 50
 text_height = 35
 
-is_visible = True
+is_visible = False
 
-def watch(variable, name, is_container=False):
-    if is_container:
+def watch(variable, name, is_obj=False):
+    if is_obj:
         __watch_list_c.insert(0, (variable, name))
     else:
         __watch_list.insert(0, (variable, name))
 
 
-
 def draw_console():
 
     if is_visible:
-        WIN.value.draw_transparent_square(__ct, Colors.black, 128)
+        WIN.draw_transparent_square(__ct, Colors.black, 128)
         
         i = text_height
         for variable in __watch_list:
-            WIN.value.draw_one(Text(__ct.x, (1080 - __ct.height) + i , font_size, Colors.white, variable[1] + ": " + str(variable[0])), 1920)
+            WIN.draw_one(Text(__ct.x, (1080 - __ct.height) + i , font_size, Colors.white, variable[1] + ": " + str(variable[0])), 1920)
             i += text_height
 
         for variable in __watch_list_c:
-            WIN.value.draw_one(Text(__ct.x, (1080 - __ct.height) + i , font_size, Colors.white, variable[1] + ": " + str(variable[0].value)), 1920)
+            WIN.draw_one(Text(__ct.x, (1080 - __ct.height) + i , font_size, Colors.white, variable[1] + ": " + str(variable.repr())), 1920)
             i += text_height
 
         i = text_height
         for log in __print_list:
             if i < __ct.height:
-                WIN.value.draw_one(Text(__ct.x, 1080 - i, font_size, Colors.white, log), 1920)
+                WIN.draw_one(Text(__ct.x, 1080 - i, font_size, Colors.white, log), 1920)
             i += text_height

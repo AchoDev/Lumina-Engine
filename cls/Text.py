@@ -37,6 +37,17 @@ class Text(GameObject):
     def change_text(self, text):
         self.text = text
 
+    def get_width(self):
+        self.__set_size()
+        return self.width
+
     def place_center(self, width, height):
         self.__set_size()
         super().place_center(width, height)
+
+    @classmethod
+    def with_transform(cls, text, transform, color):
+        txt = cls(transform.x, transform.y, 50, color, text)
+        width = txt.get_width()
+        txt.font_size *= transform.width / width
+        return txt

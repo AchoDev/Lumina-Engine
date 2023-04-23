@@ -11,24 +11,46 @@ class Image(GameObject):
         self.path = path
         self.image = pygame.image.load(path)
 
+        self.transform.width, self.transform.height = self.image.get_size()
+        
+        return self.image
+
         # self.image = pygame.transform.scale(self.image, (self.width, self.height)).convert()
 
     def resize(self, width, height):
-        self.width = width
-        self.height = height
+        self.transform.width = width
+        self.transform.height = height
+        self.original_size = (width, height)
 
         if self.image != None:
             self.image = pygame.transform.scale(self.image, (width, height))
+            self.update_image()
+            print("UPDATED")
 
     def get_image(self):
         return self.image
 
     def update(self):
+        super().update()
+
+    def update_image(self):
         self.image = pygame.image.load(self.path).convert()
-        self.image = pygame.transform.scale(self.image, (self.width, self.height)).convert()
+        self.image = pygame.transform.scale(self.image, (self.transform.width, self.transform.height)).convert()
+
+    def set_surface(self, sur):
+        self.image = sur
+        return self
 
     def draw(self, window):
-        window.win.blit(self.image, (self.x, self.y))
+
+        print(self.transform.width, self.transform.height)
+
+        self.resize(self.transform.width, self.transform.height)
+
+        if self.original_size != self.transform.get_size():
+            self.update_image()
+
+        window.win.blit(self.image, (self.transform.x, self.transform.y))
 
     @classmethod
     def with_args(cls, xPos, yPos, width, height):

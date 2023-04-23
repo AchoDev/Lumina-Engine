@@ -23,5 +23,5 @@ from .Point import Point
 from .Square import *
 from .Text import Text
 from .Window import Window, debug_mode
-
+from .Surface import Surface
 

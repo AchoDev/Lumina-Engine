@@ -1,4 +1,4 @@
-import sys
+import sys, copy
 
 sys.path.append("..")
 from components.Transform import Transform
@@ -9,15 +9,23 @@ class GameObject:
         self.__animation = None
         self.original_size = [width, height]
 
+        self.local_tranform = Transform(0, 0, 0, 0)
+
+        self.children = []
         self.components = []
         self.components.append(Transform(xPos, yPos, width, height))
         self.transform = self.get_transform()
+
 
     def attach_animation(self, animation):
         self.__animation = animation
 
     def get_transform(self):
         return self.get_component("Transform")
+
+    def draw(self, screen):
+        for child in self.children:
+            child.draw(screen)
 
     def resize(self, width, height):
         self.width = width
@@ -32,9 +40,13 @@ class GameObject:
 
         return False
 
-    def refresh_components(self):
+    def draw_children(self, window):
+        for child in self.children:
+            window.draw_one(child)
+
+    def refresh_components(self, scene):
         for component in self.components:
-            component.update()
+            component.update(scene)
 
     def set_x(self, x):
         self.x = x
@@ -61,6 +73,22 @@ class GameObject:
     def get_animation(self):
         return self.__animation
 
+    def add_child(self, obj):
+
+        obj.local_transform = copy.copy(obj.transform)
+
+        obj.transform.x += self.transform.x
+        obj.transform.y += self.transform.y
+
+        self.children.append(obj)
+
+    def add_children(self, objs):
+        for child in objs:
+            self.add_child(child)
+
+    def clear_children(self):
+        self.children = []
+
     def update_animation(self, dt):
         if self.__animation != None:
             if self.__animation.is_finished == True:
@@ -72,7 +100,12 @@ class GameObject:
             return False
 
     def update(self):
-        pass
+        for child in self.children:
+            child.transform.x = self.transform.x + child.local_transform.x
+            child.transform.y = self.transform.y + child.local_transform.y
+
+            child.transform.width *= self.original_size[0] / self.transform.width
+            child.transform.height *= self.original_size[1] / self.transform.height
 
     def place_center(self, width, height):
         self.x = width // 2 - self.width // 2
@@ -109,3 +142,7 @@ class GameObject:
     def place_center_right(self, width, height):
         self.x = width - self.width
         self.y = height // 2 - self.height // 2
+
+    @classmethod
+    def with_transform(cls, transform):
+        return cls(transform.x, transform.y, transform.width, transform.height)

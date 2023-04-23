@@ -10,28 +10,26 @@ sys.path.append("..")
 
 from components.Transform import Transform
 from delta_time import average_fps
-from main import CANVAS_SIZE
 
 window_ratio = Container(0)
 
 debug_mode = Container(False)
 class Window:
-    def __init__(self, width, height):
+    def __init__(self, width, height, canvas_size, init=True):
         self.width = width
         self.height = height
-        self.win = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
-        self.canvas_width = CANVAS_SIZE[0]
 
-        window_ratio.change(self.width / self.canvas_width)
+        if init: self.win = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
+        self.canvas_size = canvas_size
 
-    def draw_many(self, objects, prn=False):
+        window_ratio.change(self.width / self.canvas_size[0])
+
+    def draw_many(self, objects, scene):
         for object in objects:
             # self.win.blit(object.get_body(), (object.x, object.y))
-            self.draw_one(object, prn) 
+            self.draw_one(object, scene)
 
-    def draw_one(self, obj, prn=False):
-
-
+    def draw_one(self, obj, scene):
         
         ratio = window_ratio.value # l + ratio
         
@@ -54,20 +52,25 @@ class Window:
 
         obj.draw(self)
 
-        if prn and debug_mode.value:
-            # print(obj.width)
-            # print(obj.height)
-            self.draw_rect(Square(ot.x, ot.y, ot.width, ot.height, Colors.blue, hollow=True), Colors.green)
-
         obj.transform.set(ot)
 
         if type(obj).__name__ == "Text":
             obj.font_size = original_font_size
 
+    def update(self):
+        pass
 
-    def draw_rect(self, obj, color):
-        rect = pygame.Rect(obj.transform.x, obj.transform.y, obj.transform.width, obj.transform.height)
-        pygame.draw.rect(self.win, color, rect, 2 if obj.is_hollow else 0 ,border_radius=obj.border_radius)
+    def draw_rect(self, obj, color, alpha=255):
+        t = obj.transform
+        
+        if alpha == 255:
+            rect = pygame.Rect(t.x, t.y, t.width, t.height)
+            pygame.draw.rect(self.win, color, rect, 2 if obj.is_hollow else 0 ,border_radius=obj.border_radius)
+        else:    
+            s = pygame.Surface((t.width, t.height))
+            s.set_alpha(alpha)                
+            s.fill(color)           
+            self.win.blit(s, (t.x, t.y))
 
     def draw_transparent_square(self, obj, color, alpha):
         s = pygame.Surface((obj.x * window_ratio.value, obj.y * window_ratio.value))
@@ -91,7 +94,26 @@ class Window:
         self.width = self.win.get_width()
         self.height = self.win.get_height()
 
-        window_ratio.change(self.width / self.canvas_width)
+        window_ratio.change(self.width / self.canvas_size[0])
+
+    def set_attr(self, scale, canvas):
+        self.width = scale[0]
+        self.height = scale[1]
+        self.canvas_size = canvas
+
+        self.win = pygame.display.set_mode(scale, pygame.RESIZABLE, 0)
+
+
+    def get_ratio(self):
+        return window_ratio
+
+    @classmethod
+    def empty_window(cls):
+        return cls(100, 100, (100, 100), init=False)
+
+    @staticmethod
+    def get_relative_value(tup):
+        return (tup[0] * window_ratio.value, tup[1] * window_ratio.value)
 
     @staticmethod
     def get_rect(object):
