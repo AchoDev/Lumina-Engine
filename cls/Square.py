@@ -13,6 +13,7 @@ class Square(GameObject):
         self.is_hollow = hollow
 
     def draw(self, window):
+        super().draw()
         window.draw_rect(self, self.color, self.alpha)
         self.draw_children(window)
 

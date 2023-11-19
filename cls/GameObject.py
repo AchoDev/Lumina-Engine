@@ -11,6 +11,8 @@ class GameObject:
 
         self.local_tranform = Transform(0, 0, 0, 0)
 
+        self.__window_transform = Transform(0, 0, 0, 0)
+
         self.children = []
         self.components = []
         self.components.append(Transform(xPos, yPos, width, height))
@@ -23,7 +25,8 @@ class GameObject:
     def get_transform(self):
         return self.get_component("Transform")
 
-    def draw(self, screen):
+    def draw(self, screen, ratio):
+        self.__window_transform.x = # HIER STEHEN GEBLIEBEN BEI WINDOW TO CAM RATIO !!
         for child in self.children:
             child.draw(screen)
 

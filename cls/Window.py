@@ -11,7 +11,7 @@ sys.path.append("..")
 from components.Transform import Transform
 from delta_time import average_fps
 
-window_ratio = Container(0)
+window_ratio = Container(100)
 
 debug_mode = Container(False)
 class Window:
@@ -24,12 +24,12 @@ class Window:
 
         window_ratio.change(self.width / self.canvas_size[0])
 
-    def draw_many(self, objects, scene):
+    def draw_many(self, objects, camera):
         for object in objects:
             # self.win.blit(object.get_body(), (object.x, object.y))
-            self.draw_one(object, scene)
+            self.draw_one(object, camera)
 
-    def draw_one(self, obj, scene):
+    def draw_one(self, obj, camera):
         
         ratio = window_ratio.value # l + ratio
         
@@ -50,7 +50,7 @@ class Window:
         obj_tf.width *= ratio
         obj_tf.height *= ratio
 
-        obj.draw(self)
+        obj.draw(self, )
 
         obj.transform.set(ot)
 
@@ -94,7 +94,7 @@ class Window:
         self.width = self.win.get_width()
         self.height = self.win.get_height()
 
-        window_ratio.change(self.width / self.canvas_size[0])
+        window_ratio.change(self.width / self.current_camera.)
 
     def set_attr(self, scale, canvas):
         self.width = scale[0]

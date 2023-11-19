@@ -1,7 +1,7 @@
 from main import WIN
 from Eventloop import Eventloop
 from cls.functions import *
-from cls import GameObject, Container, Square, Text, Colors
+from cls import GameObject, Container, Square, Text, Colors, Camera
 
 from events.KeyEvent import KeyEvent
 
@@ -9,7 +9,7 @@ from components.Draghandler import Draghandler
 from components.Transform import Transform
 
 
-from box2d.library.Box2D import *
+from Box2D import *
 
 import pygame
 
@@ -66,6 +66,7 @@ class Scene:
 
         self.window_dimensions = Container((0, 0))
 
+        self.current_camera = self.objects.append(Camera(0, 0, *WIN.canvas_size))
 
         self.debug_mode = False
         # self.debug_window = Object_List("Object List", objects=self.objects)
@@ -77,6 +78,7 @@ class Scene:
 
     def get_window_ratio(self):
         return WIN.get_ratio()
+    
 
     def load(self):
 
