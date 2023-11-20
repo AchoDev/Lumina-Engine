@@ -9,7 +9,7 @@ scene.fill("white")
 b = scene.add_object(Square(1, 1, 1, 1, blue))
 b.add_component(Rigidbody(b, False))
 
-b2 = scene.add_object(Square(0, 10, 10, 1, black))
+b2 = scene.add_object(Square(0, 10, 10, 1, red))
 b2.add_component(Rigidbody(b2, True))
 
 
@@ -29,30 +29,42 @@ camera = scene.camera
 
 while True:
     
-    # if(scale_up.check()): scene.camera.orthographic_size += 0.1
-    # if(scale_down.check()): scene.camera.orthographic_size -= 0.1
+    def print_info():
+        print(scene.camera.orthographic_size)
+        print(scene.camera.transform.get_position())
+        print(b2.transform.get_position())
 
-    # if(movement_events[0].check()): scene.camera.transform.x += 0.1
-    # if(movement_events[1].check()): scene.camera.transform.x -= 0.1
-    
-    # if(movement_events[2].check()): scene.camera.transform.y += 0.1
-    # if(movement_events[3].check()): scene.camera.transform.y -= 0.1
+        print("")
 
     if(get_key('right')): 
-        scene.camera.transform.x -= 5 * delta_time.DELTA_TIME
+        scene.camera.transform.x -= 20 * delta_time.DELTA_TIME * (scene.camera.orthographic_size / 20)
+        print_info()
+    
     if(get_key('left')): 
-        scene.camera.transform.x += 5 * delta_time.DELTA_TIME
+        scene.camera.transform.x += 20 * delta_time.DELTA_TIME * (scene.camera.orthographic_size / 20)
+        print_info()
+    
     if(get_key('up')): 
-        scene.camera.transform.y += 5 * delta_time.DELTA_TIME
+        scene.camera.transform.y += 20 * delta_time.DELTA_TIME * (scene.camera.orthographic_size / 20)
+        print_info()
+    
     if(get_key('down')): 
-        scene.camera.transform.y -= 5 * delta_time.DELTA_TIME
+        scene.camera.transform.y -= 20 * delta_time.DELTA_TIME * (scene.camera.orthographic_size / 20)
+        print_info()
 
     if(get_key('e')):
         scene.camera.orthographic_size *= 0.99
+        print_info()
+        
+
     if(get_key('r')):
         scene.camera.orthographic_size /= 0.99
+        print_info()
+    
 
-    print(scene.camera.orthographic_size)
+    if(get_key('a')):
+        rb: Rigidbody = b2.get_component("Rigidbody")
+        rb.add_force(10)
 
     scene.load()
 

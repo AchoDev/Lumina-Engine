@@ -14,7 +14,6 @@ class GameObject:
         self.children = []
         self.components = []
         self.transform = self.add_component(Transform(xPos, yPos, width, height))
-        self.transform = self.get_transform()
 
 
     def attach_animation(self, animation):

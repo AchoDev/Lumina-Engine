@@ -91,18 +91,25 @@ class Scene:
             object.update()
 
         
-        WIN.fill((0, 0, 0))
-        WIN.draw_one(Square(
-            -self.camera.transform.x,
-            -self.camera.transform.y, 
-            self.camera.transform.width * self.camera.orthographic_size, 
-            self.camera.transform.height * self.camera.orthographic_size, 
-            self.background_color), 
-            self.camera)
+        WIN.fill(self.background_color)
+        # WIN.draw_one(Square(
+        #     self.camera.transform.x,
+        #     self.camera.transform.y, 
+        #     self.camera.orthographic_size, 
+        #     self.camera.orthographic_size, 
+        #     self.background_color), 
+        #     self.camera)
 
         self.update_dimensions()
 
+        self.camera.original_transform.set(self.camera.transform)
+
+        self.camera.transform.x += self.camera.orthographic_size / 2
+        self.camera.transform.y += self.camera.orthographic_size / 2
+
         WIN.draw_many(self.objects, self.camera)
+
+        self.camera.transform.set(self.camera.original_transform)
 
         if self.debug_mode:
             self.debug_window.draw()

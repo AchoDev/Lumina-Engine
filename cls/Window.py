@@ -33,12 +33,16 @@ class Window:
 
     def draw_one(self, obj, camera):
 
+        
+
         if(obj == camera): return
 
 
         self.current_camera = camera
-        window_ratio.change(self.width / self.height / self.current_camera.orthographic_size)
+        window_ratio.change(self.width / self.current_camera.orthographic_size)
         
+
+
         ratio = window_ratio.value # l + ratio
         
         if type(obj).__name__ == "Text":
@@ -54,6 +58,9 @@ class Window:
         obj_tf.x += self.current_camera.transform.x
         obj_tf.y += self.current_camera.transform.y
 
+        obj_tf.x -= obj_tf.width / 2
+        obj_tf.y -= obj_tf.height / 2
+# 
         obj_tf.x *= ratio
         obj_tf.y *= ratio
         
@@ -61,6 +68,11 @@ class Window:
         obj_tf.height *= ratio
 
         obj.draw(self)
+
+        obj.transform.width = 0.5
+        obj.transform.height = 0.2
+
+        self.draw_rect(obj, (255, 255, 0))
 
         obj.transform.set(ot)
 
