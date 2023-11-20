@@ -7,3 +7,4 @@ from components import *
 from events.KeyEvent import KeyEvent
 from events.Event import Event
 import delta_time
+from Input import * 

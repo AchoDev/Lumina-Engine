@@ -22,6 +22,8 @@ class Window:
         if init: self.win = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
         self.canvas_size = canvas_size
 
+        self.current_camera = None
+
         window_ratio.change(self.width / self.canvas_size[0])
 
     def draw_many(self, objects, camera):
@@ -30,6 +32,12 @@ class Window:
             self.draw_one(object, camera)
 
     def draw_one(self, obj, camera):
+
+        if(obj == camera): return
+
+
+        self.current_camera = camera
+        window_ratio.change(self.width / self.height / self.current_camera.orthographic_size)
         
         ratio = window_ratio.value # l + ratio
         
@@ -43,6 +51,8 @@ class Window:
 
         ot = copy.copy(obj.transform) # ot -> original transform
         
+        obj_tf.x += self.current_camera.transform.x
+        obj_tf.y += self.current_camera.transform.y
 
         obj_tf.x *= ratio
         obj_tf.y *= ratio
@@ -50,7 +60,7 @@ class Window:
         obj_tf.width *= ratio
         obj_tf.height *= ratio
 
-        obj.draw(self, )
+        obj.draw(self)
 
         obj.transform.set(ot)
 
@@ -66,10 +76,10 @@ class Window:
         if alpha == 255:
             rect = pygame.Rect(t.x, t.y, t.width, t.height)
             pygame.draw.rect(self.win, color, rect, 2 if obj.is_hollow else 0 ,border_radius=obj.border_radius)
-        else:    
+        else:
             s = pygame.Surface((t.width, t.height))
-            s.set_alpha(alpha)                
-            s.fill(color)           
+            s.set_alpha(alpha)
+            s.fill(color)
             self.win.blit(s, (t.x, t.y))
 
     def draw_transparent_square(self, obj, color, alpha):
@@ -94,7 +104,7 @@ class Window:
         self.width = self.win.get_width()
         self.height = self.win.get_height()
 
-        window_ratio.change(self.width / self.current_camera.)
+        # window_ratio.change(self.width / self.current_camera.transform.width / self.current_camera.orthographic_size)
 
     def set_attr(self, scale, canvas):
         self.width = scale[0]

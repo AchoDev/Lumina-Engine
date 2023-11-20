@@ -11,7 +11,12 @@ class Transform(Component):
         self.height = height
 
     def set(self, transform):
-        self = copy.copy(transform)
+        # self = copy.copy(transform)
+
+        self.x = transform.x
+        self.y = transform.y
+        self.width = transform.width
+        self.height = transform.height
 
     def get_position(self):
         return (self.x, self.y)

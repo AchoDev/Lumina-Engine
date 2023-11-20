@@ -66,7 +66,7 @@ class Scene:
 
         self.window_dimensions = Container((0, 0))
 
-        self.current_camera = self.objects.append(Camera(0, 0, *WIN.canvas_size))
+        self.camera = self.add_object(Camera(0, 0, *WIN.canvas_size))
 
         self.debug_mode = False
         # self.debug_window = Object_List("Object List", objects=self.objects)
@@ -92,11 +92,17 @@ class Scene:
 
         
         WIN.fill((0, 0, 0))
-        WIN.draw_one(Square(0, 0, WIN.canvas_size[0], WIN.canvas_size[1], self.background_color), self)
+        WIN.draw_one(Square(
+            -self.camera.transform.x,
+            -self.camera.transform.y, 
+            self.camera.transform.width * self.camera.orthographic_size, 
+            self.camera.transform.height * self.camera.orthographic_size, 
+            self.background_color), 
+            self.camera)
 
         self.update_dimensions()
 
-        WIN.draw_many(self.objects, self)
+        WIN.draw_many(self.objects, self.camera)
 
         if self.debug_mode:
             self.debug_window.draw()
@@ -108,16 +114,17 @@ class Scene:
 
     def add_event(self, event):
         self.event_loop.add_event(event)
+        return event
 
     def add_many_events(self, events):
         for event in events:
             self.event_loop.add_event(event)
     
-    def add_one(self, obj):
+    def add_object(self, obj):
         self.objects.append(obj)
         return obj
     
-    def add_many(self, objs):
+    def add_multiple_objects(self, objs):
         self.objects += objs
         return objs
 
