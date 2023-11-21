@@ -2,6 +2,7 @@
 from .Component import Component
 from .Vector2 import Vector2
 import copy
+import math
 
 class Transform(Component):
     def __init__(self, xPos, yPos, width, height):
@@ -9,6 +10,9 @@ class Transform(Component):
         self.y = yPos
         self.width = width
         self.height = height
+        self.angle = 0
+
+        self.parent = None
 
     def set(self, transform):
         # self = copy.copy(transform)
@@ -18,6 +22,9 @@ class Transform(Component):
         self.width = transform.width
         self.height = transform.height
 
+    def set_parent(self, parent):
+        self.parent = parent
+
     def get_position(self):
         return (self.x, self.y)
     
@@ -25,8 +32,18 @@ class Transform(Component):
         return (self.width, self.height)
 
     def set_position(self, pos):
-        self.x = pos[0]
-        self.y = pos[1]
+        self.x = pos.x
+        self.y = pos.y
+
+        if(self.parent != None):
+            rb = self.parent.get_component("Rigidbody")
+
+            if(rb == None): return
+            if(rb.b2box == None): return
+            rb.b2box.position = self.get_position()
+
+    def set_rotation_rad(self, rad):
+        self.angle = rad * (180 / math.pi)
 
     def reset_position(self):
         self.x, self.y = 0
@@ -37,6 +54,8 @@ class Transform(Component):
     def get_size(self):
         return self.scale
     
+
+
     def repr(self):
         return f'''\n
         pos: \n

@@ -8,6 +8,7 @@ from events.KeyEvent import KeyEvent
 from components.Draghandler import Draghandler
 from components.Transform import Transform
 
+import delta_time
 
 from Box2D import *
 
@@ -91,14 +92,9 @@ class Scene:
             object.update()
 
         
+
+        
         WIN.fill(self.background_color)
-        # WIN.draw_one(Square(
-        #     self.camera.transform.x,
-        #     self.camera.transform.y, 
-        #     self.camera.orthographic_size, 
-        #     self.camera.orthographic_size, 
-        #     self.background_color), 
-        #     self.camera)
 
         self.update_dimensions()
 

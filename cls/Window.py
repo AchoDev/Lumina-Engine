@@ -19,7 +19,9 @@ class Window:
         self.width = width
         self.height = height
 
-        if init: self.win = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
+        if init: 
+            self.win = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
+            pygame.display.set_caption('Lumina-Engine window')
         self.canvas_size = canvas_size
 
         self.current_camera = None
@@ -69,11 +71,6 @@ class Window:
 
         obj.draw(self)
 
-        obj.transform.width = 0.5
-        obj.transform.height = 0.2
-
-        self.draw_rect(obj, (255, 255, 0))
-
         obj.transform.set(ot)
 
         if type(obj).__name__ == "Text":
@@ -85,13 +82,14 @@ class Window:
     def draw_rect(self, obj, color, alpha=255):
         t = obj.transform
         
-        if alpha == 255:
+        if alpha == 255 and t.angle == 0:
             rect = pygame.Rect(t.x, t.y, t.width, t.height)
             pygame.draw.rect(self.win, color, rect, 2 if obj.is_hollow else 0 ,border_radius=obj.border_radius)
         else:
             s = pygame.Surface((t.width, t.height))
             s.set_alpha(alpha)
             s.fill(color)
+            s = pygame.transform.rotate(s, t.angle)
             self.win.blit(s, (t.x, t.y))
 
     def draw_transparent_square(self, obj, color, alpha):
@@ -124,6 +122,7 @@ class Window:
         self.canvas_size = canvas
 
         self.win = pygame.display.set_mode(scale, pygame.RESIZABLE, 0)
+        pygame.display.set_caption('Lumina-Engine window')
 
 
     def get_ratio(self):

@@ -10,4 +10,13 @@ class Camera(GameObject):
 
     def change_ortho(self, value):
         self.orthographic_size = value
+
+    def window_to_world_position(self, pos):
+        # print(pos.x / self.transform.width * self.orthographic_size - self.transform.x)
+        
+        return Transform(
+            ((pos.x - self.transform.width / 2) / self.transform.width) * self.orthographic_size - self.transform.x,
+            ((pos.y - self.transform.height / 2) / self.transform.height) * self.orthographic_size - self.transform.y,
+            0, 0,
+        )
         

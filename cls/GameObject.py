@@ -15,6 +15,8 @@ class GameObject:
         self.components = []
         self.transform = self.add_component(Transform(xPos, yPos, width, height))
 
+        self.transform.set_parent(self)
+
 
     def attach_animation(self, animation):
         self.__animation = animation
@@ -38,7 +40,7 @@ class GameObject:
         for component in self.components:
             if component.__class__.__name__ == name: return component
 
-        return False
+        return None
 
     def draw_children(self, window):
         for child in self.children:

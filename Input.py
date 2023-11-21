@@ -1,5 +1,6 @@
 
 import pygame
+from components import Vector2
 
 key_map = {
     'left': pygame.K_LEFT,
@@ -41,3 +42,6 @@ def get_key(key):
     if(keys[key_map[key]]): return True
 
     return False
+
+def get_mouse_pos():    
+    return Vector2.from_tuple(pygame.mouse.get_pos())
