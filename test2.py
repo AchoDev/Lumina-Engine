@@ -1,44 +1,43 @@
 from __init__ import *
 
-window_dim = (750, 800)
+window_dim = (1000, 800)
 init(window_dim)
 
 scene = Scene("t")
 scene.fill(light_blue)
 
 b = scene.add_object(Square(-50, -2.5, 1, 1, blue))
-b.add_component(Rigidbody(b, False))
+b.add_component(Rigidbody(False))
 
 b3 = scene.add_object(Square(1.5, -1, 1, 1, blue))
-b3.add_component(Rigidbody(b3, False))
+b3.add_component(Rigidbody(False))
 
 b2 = scene.add_object(Square(0, 1, 10, 1, red))
-b2.add_component(Rigidbody(b2, True))
+b2.add_component(Rigidbody(True))
+
+scene.camera.transform.y = 0
 
 ground = [
-    Square(-5, 5, 1, 10, red),
-    Square(5, 5, 1, 10, red),
+    # Square(-5, 5, 1, 10, red),
+    # Square(5, 5, 1, 10, red),
+    Square(0, 0, 1, 7, green),
     Square(0, 10, 40, 1, red),
+    Square(-20, 0, 1, 40, red),
+    Square(20, 0, 1, 40, red),
+
+    Square(50, 50, 1, 1, violet),
 ]
 
 for g in ground:
-    g.add_component(Rigidbody(g, True))
+    g.add_component(Rigidbody(True))
 
 scene.add_multiple_objects(ground)
 
 
-mouse_collider = scene.add_object(Square(0, 0, 0.5, 0.5, orange))
-mouse_collider.add_component(Rigidbody(mouse_collider, False))
+mouse_collider = scene.add_object(GameObject(0, 0, 0, 0))
 
-# scale_up = scene.add_event(KeyEvent("e"))
-# scale_down = scene.add_event(KeyEvent("r"))
-
-# movement_events = [
-#     scene.add_event(KeyEvent("left")),
-#     scene.add_event(KeyEvent("right")),
-#     scene.add_event(KeyEvent("up")),
-#     scene.add_event(KeyEvent("down")),
-# ]
+mouse_collider.add_child(Square(0, 0, 5, 0.5, orange)).add_component(Rigidbody(False)).fixed_rotation = False
+mouse_collider.add_child(Square(-4.5, 0, 0.5, 1, orange)).add_component(Rigidbody(False)).fixed_rotation = False
 
 console.watch(b2.transform, "", True)
 
@@ -81,6 +80,7 @@ while True:
         scene.camera.orthographic_size /= 0.99
         print_info()
     
+    mouse_pos = scene.camera.window_to_world_position(get_mouse_pos())
 
     if(get_key('a')):
         # rb: Rigidbody = b2.get_component("Rigidbody")
@@ -90,17 +90,15 @@ while True:
 
         # b.add_component(Rigidbody(b, False))
 
-        new_instance = scene.add_object(Square(0, -3, 1, 1, white))
-        new_instance.add_component(Rigidbody(new_instance, False))
+        scene.add_object(Square(mouse_pos.x, mouse_pos.y - 1, 0.1, 0.1, white)).add_component(Rigidbody(False))        
 
-    mouse_pos = scene.camera.window_to_world_position(get_mouse_pos())
 
-    rb = mouse_collider.get_component("Rigidbody")
-    rb.move_position(scene.camera.window_to_world_position(get_mouse_pos()))
-    # print(mouse_collider.transform.get_position())
+    # rb: Rigidbody = mouse_collider.get_component("Rigidbody")
+    # rb.move_position(scene.camera.window_to_world_position(get_mouse_pos()))
+    # print(rb.velocity)
 
-    # if(b2rb.b2box != None): print(b2rb.b2box.linearVelocity)
-    
+    mouse_collider.transform.set_position(mouse_pos)
+
 
     scene.load()
 

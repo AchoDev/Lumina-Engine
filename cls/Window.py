@@ -73,6 +73,19 @@ class Window:
 
         obj.transform.set(ot)
 
+        for child in obj.children:
+            child_ot = copy.copy(child.transform)
+            child_t = child.transform
+            child_t.x += obj_tf.x
+            child_t.y += obj_tf.y
+            child_t.width += obj_tf.width
+            child_t.height += obj_tf.height
+
+            self.draw_one(child, camera)
+
+            child.transform.set(child_ot)
+            
+
         if type(obj).__name__ == "Text":
             obj.font_size = original_font_size
 
@@ -113,6 +126,9 @@ class Window:
     def videoresize(self):
         self.width = self.win.get_width()
         self.height = self.win.get_height()
+
+        self.current_camera.transform.width = self.width
+        self.current_camera.transform.height = self.height
 
         # window_ratio.change(self.width / self.current_camera.transform.width / self.current_camera.orthographic_size)
 

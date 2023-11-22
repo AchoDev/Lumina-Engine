@@ -9,6 +9,9 @@ class Vector2:
     def reset(self):
         self.x, self.y = 0
 
+    def __repr__(self) -> str:
+        return f'Vector2({self.x}, {self.y})'
+
     @classmethod
     def from_tuple(cls, tuple):
         return cls(tuple[0], tuple[1])

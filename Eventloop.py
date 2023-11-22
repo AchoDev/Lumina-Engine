@@ -49,7 +49,7 @@ class Eventloop:
 
         delta_time.update_delta_time()
         console.draw_console()
-        self.world.Step(delta_time.DELTA_TIME, 6, 2)
+        self.world.Step(delta_time.DELTA_TIME, 10, 10)
         self.world.ClearForces()
 
         pygame.display.update()

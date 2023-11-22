@@ -6,13 +6,49 @@ import math
 
 class Transform(Component):
     def __init__(self, xPos, yPos, width, height):
-        self.x = xPos
-        self.y = yPos
-        self.width = width
-        self.height = height
-        self.angle = 0
+        self._x = xPos
+        self._y = yPos
+        self._width = width
+        self._height = height
+        self._angle = 0
 
         self.parent = None
+
+    @property
+    def x(self):
+        return self._x
+
+    @x.setter
+    def x(self, xPos):
+        self._x = xPos
+        self.update_b2_position()
+
+    @property
+    def y(self):
+        return self._y
+    
+    @y.setter
+    def y(self, yPos):
+        self._y = yPos
+        self.update_b2_position()
+
+    @property
+    def width(self):
+        return self._width
+    
+    @width.setter
+    def setter(self, w):
+        self._width = w
+        self.update_b2_position()
+
+    @property
+    def height(self):
+        return self._height
+    
+    @height.setter
+    def height(self, h):
+        self._height = h
+        self.update_b2_position()
 
     def set(self, transform):
         # self = copy.copy(transform)
@@ -35,12 +71,14 @@ class Transform(Component):
         self.x = pos.x
         self.y = pos.y
 
+    def update_b2_position(self):
         if(self.parent != None):
             rb = self.parent.get_component("Rigidbody")
 
             if(rb == None): return
             if(rb.b2box == None): return
             rb.b2box.position = self.get_position()
+            rb.b2pox.cock()
 
     def set_rotation_rad(self, rad):
         self.angle = rad * (180 / math.pi)

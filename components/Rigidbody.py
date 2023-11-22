@@ -7,24 +7,49 @@ import delta_time
 sys.path.append("..")
 
 class Rigidbody(Component):
-    def __init__(self, target, static):
-        self.target = target
-        self.transform = target.get_component("Transform")
+    def __init__(self, static):
         self.static = static
 
         self.density = 10
-
+        self._fixed_rotation = False
         self.b2box = None
         
+
+    @property
+    def fixed_rotation(self):
+        return self._fixed_rotation
+    
+    @fixed_rotation.setter
+    def fixed_rotation(self, rotation):
+        self._fixed_rotation = rotation
+        if(self.b2box != None):
+            self.b2box.fixedRotation = rotation
+
+    @property 
+    def velocity(self):
+        if(self.b2box == None): 
+            return (0, 0)
+        
+        vel = self.b2box.linearVelocity
+        return Vector2(vel.x, vel.y)
+
 
     def update(self, scene):
 
         if not self.b2box:
-            if not self.static: self.b2box = scene.physics_world.CreateDynamicBody(position=self.transform.get_position())
-            else: self.b2box = scene.physics_world.CreateStaticBody(position=self.transform.get_position())
 
-            w = self.transform.width / 2
-            h = self.transform.height / 2
+            tr = self.target.transform
+            
+            if not self.static: 
+                self.b2box = scene.physics_world.CreateDynamicBody(position=tr.get_position())
+                self.b2box.fixedRotation = self.fixed_rotation
+            else: 
+                self.b2box = scene.physics_world.CreateStaticBody(position=tr.get_position())
+                self.b2box.fixedRotation = self.fixed_rotation
+
+
+            w = tr.width / 2
+            h = tr.height / 2
             self.b2box.CreatePolygonFixture(box=(w, h), density=1, friction=1.3)
 
 
@@ -36,11 +61,14 @@ class Rigidbody(Component):
         # self.transform.x += self.xVel * delta_time.DELTA_TIME
         # self.transform.y += self.yVel * delta_time.DELTA_TIME
 
+    def fix_rotation(self):
+        self.fixed_rotation = True
+
     def move_position(self, position):
         if(self.b2box == None): return
         tr = self.target.transform
         fps = delta_time.get_fps()
-        self.b2box.linearVelocity.Set((position.x - tr.x * fps), (position.y - tr.y) * fps)
+        self.b2box.linearVelocity.Set((position.x - tr.x) * fps, (position.y - tr.y) * fps)
         self.b2box.position.Set(position.x, position.y)
         # tr.set_position(position)
         # self.b2box.setLinearVelocity.y = position.y - tr.y
@@ -48,7 +76,7 @@ class Rigidbody(Component):
         # print(position.x)
         # print(tr.x)
 
-        print(self.b2box.linearVelocity)
+        # print(self.b2box.linearVelocity)
 
         # print()
 

@@ -15,7 +15,6 @@ class Square(GameObject):
     def draw(self, window):
         super().draw(window)
         window.draw_rect(self, self.color, self.alpha)
-        self.draw_children(window)
 
     @staticmethod
     def get_square(object):

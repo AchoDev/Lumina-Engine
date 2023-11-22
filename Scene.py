@@ -61,7 +61,7 @@ class Scene:
 
         self.name = name
         self.objects = objects
-        self.physics_world = b2World(gravity=(0,10), doSleep=True)
+        self.physics_world = b2World(gravity=(0,9.81), doSleep=True)
         self.event_loop = Eventloop(self.physics_world)
         self.background_color = (255, 255, 255)
 
@@ -101,7 +101,10 @@ class Scene:
         self.camera.original_transform.set(self.camera.transform)
 
         self.camera.transform.x += self.camera.orthographic_size / 2
-        self.camera.transform.y += self.camera.orthographic_size / 2
+
+        ratio = self.camera.transform.height / (self.camera.transform.width / self.camera.orthographic_size)
+
+        self.camera.transform.y += ratio / 2
 
         WIN.draw_many(self.objects, self.camera)
 

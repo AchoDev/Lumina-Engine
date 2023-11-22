@@ -2,6 +2,7 @@ import sys, copy
 
 sys.path.append("..")
 from components.Transform import Transform
+from components.Component import Component
 
 class GameObject:
     def __init__(self, xPos, yPos, width = 0, height = 0):
@@ -13,7 +14,7 @@ class GameObject:
 
         self.children = []
         self.components = []
-        self.transform = self.add_component(Transform(xPos, yPos, width, height))
+        self.transform: Transform = self.add_component(Transform(xPos, yPos, width, height))
 
         self.transform.set_parent(self)
 
@@ -32,8 +33,9 @@ class GameObject:
         self.width = width
         self.height = height
 
-    def add_component(self, component):
+    def add_component(self, component: Component):
         self.components.append(component)
+        component.set_target(self)
         return component
 
     def get_component(self, name:str):
@@ -41,10 +43,6 @@ class GameObject:
             if component.__class__.__name__ == name: return component
 
         return None
-
-    def draw_children(self, window):
-        for child in self.children:
-            window.draw_one(child)
 
     def refresh_components(self, scene):
         for component in self.components:
@@ -84,6 +82,8 @@ class GameObject:
 
         self.children.append(obj)
 
+        return obj
+
     def add_children(self, objs):
         for child in objs:
             self.add_child(child)
@@ -102,12 +102,7 @@ class GameObject:
             return False
 
     def update(self):
-        for child in self.children:
-            child.transform.x = self.transform.x + child.local_transform.x
-            child.transform.y = self.transform.y + child.local_transform.y
-
-            child.transform.width *= self.original_size[0] / self.transform.width
-            child.transform.height *= self.original_size[1] / self.transform.height
+        pass
 
     def place_center(self, width, height):
         self.x = width // 2 - self.width // 2
