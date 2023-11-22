@@ -91,9 +91,7 @@ class Scene:
             object.refresh_components(self)
             object.update()
 
-        
 
-        
         WIN.fill(self.background_color)
 
         self.update_dimensions()

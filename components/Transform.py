@@ -37,7 +37,7 @@ class Transform(Component):
         return self._width
     
     @width.setter
-    def setter(self, w):
+    def width(self, w):
         self._width = w
         self.update_b2_position()
 
@@ -48,6 +48,15 @@ class Transform(Component):
     @height.setter
     def height(self, h):
         self._height = h
+        self.update_b2_position()
+
+    @property
+    def angle(self):
+        return self._angle
+    
+    @angle.setter
+    def angle(self, ang):
+        self._angle = ang
         self.update_b2_position()
 
     def set(self, transform):
@@ -78,7 +87,6 @@ class Transform(Component):
             if(rb == None): return
             if(rb.b2box == None): return
             rb.b2box.position = self.get_position()
-            rb.b2pox.cock()
 
     def set_rotation_rad(self, rad):
         self.angle = rad * (180 / math.pi)

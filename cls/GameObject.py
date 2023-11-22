@@ -4,6 +4,8 @@ sys.path.append("..")
 from components.Transform import Transform
 from components.Component import Component
 
+from Box2D import b2BodyDef
+
 class GameObject:
     def __init__(self, xPos, yPos, width = 0, height = 0):
 
@@ -16,8 +18,14 @@ class GameObject:
         self.components = []
         self.transform: Transform = self.add_component(Transform(xPos, yPos, width, height))
 
+        self.__b2Body = None
+
         self.transform.set_parent(self)
 
+    def initialize(self, scene):
+        bodyDef = b2BodyDef()
+        bodyDef.position =  
+        self.__b2Body = scene.physics_world.CreateBody()
 
     def attach_animation(self, animation):
         self.__animation = animation
