@@ -124,8 +124,9 @@ class Scene:
         for event in events:
             self.event_loop.add_event(event)
     
-    def add_object(self, obj):
+    def add_object(self, obj: GameObject):
         self.objects.append(obj)
+        obj.initialize(self)
         return obj
     
     def add_multiple_objects(self, objs):

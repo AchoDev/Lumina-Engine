@@ -8,7 +8,6 @@ from Box2D import b2BodyDef
 
 class GameObject:
     def __init__(self, xPos, yPos, width = 0, height = 0):
-
         self.__animation = None
         self.original_size = [width, height]
 
@@ -18,14 +17,14 @@ class GameObject:
         self.components = []
         self.transform: Transform = self.add_component(Transform(xPos, yPos, width, height))
 
-        self.__b2Body = None
+        self.b2Body = None
 
         self.transform.set_parent(self)
 
     def initialize(self, scene):
         bodyDef = b2BodyDef()
-        bodyDef.position =  
-        self.__b2Body = scene.physics_world.CreateBody()
+        bodyDef.position = (self.transform.x, self.transform.y)
+        self.b2Body = scene.physics_world.CreateBody(bodyDef)
 
     def attach_animation(self, animation):
         self.__animation = animation

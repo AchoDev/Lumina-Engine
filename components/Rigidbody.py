@@ -8,12 +8,12 @@ sys.path.append("..")
 
 class Rigidbody(Component):
     def __init__(self, static):
+        super().__init__()
         self.static = static
 
         self.density = 10
         self._fixed_rotation = False
-        self.b2box = None
-        
+        self.b2Body = self.target.b2Body
 
     @property
     def fixed_rotation(self):
@@ -27,7 +27,7 @@ class Rigidbody(Component):
 
     @property 
     def velocity(self):
-        if(self.b2box == None): 
+        if(self.b2box == None):
             return (0, 0)
         
         vel = self.b2box.linearVelocity
@@ -40,7 +40,9 @@ class Rigidbody(Component):
 
             tr = self.target.transform
             
+
             if not self.static: 
+
                 self.b2box = scene.physics_world.CreateDynamicBody(position=tr.get_position())
                 self.b2box.fixedRotation = self.fixed_rotation
             else: 
