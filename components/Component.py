@@ -10,4 +10,9 @@ class Component:
     def update(self, scene):
         pass
 
+    def initialize(self):
+        pass
+
+    
+
     

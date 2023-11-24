@@ -4,27 +4,31 @@ sys.path.append("..")
 from components.Transform import Transform
 from components.Component import Component
 
-from Box2D import b2BodyDef
+from Box2D import b2PolygonShape, b2Body
 
 class GameObject:
-    def __init__(self, xPos, yPos, width = 0, height = 0):
+    def __init__(self, xPos=0, yPos=0, width = 1, height = 1):
         self.__animation = None
-        self.original_size = [width, height]
-
-        self.local_tranform = Transform(0, 0, 0, 0)
 
         self.children = []
         self.components = []
+        self.b2Body: b2Body = None
         self.transform: Transform = self.add_component(Transform(xPos, yPos, width, height))
 
-        self.b2Body = None
-
-        self.transform.set_parent(self)
-
     def initialize(self, scene):
-        bodyDef = b2BodyDef()
-        bodyDef.position = (self.transform.x, self.transform.y)
-        self.b2Body = scene.physics_world.CreateBody(bodyDef)
+        self.b2Body = scene.physics_world.CreateDynamicBody(
+            position=(self.transform.x, self.transform.y),
+            shapes=b2PolygonShape(box=self.transform.get_size())
+        )
+        self.b2Body.fixtures[0].filterData.categoryBits = 0x0000
+        self.b2Body.fixtures[0].filterData.maskBits = 0x0000
+
+        self.transform.set_target(self)
+
+        for component in self.components:
+            component.initialize()
+
+
 
     def attach_animation(self, animation):
         self.__animation = animation
@@ -43,6 +47,7 @@ class GameObject:
     def add_component(self, component: Component):
         self.components.append(component)
         component.set_target(self)
+        component.initialize()
         return component
 
     def get_component(self, name:str):

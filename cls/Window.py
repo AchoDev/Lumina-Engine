@@ -34,9 +34,6 @@ class Window:
             self.draw_one(object, camera)
 
     def draw_one(self, obj, camera):
-
-        
-
         if(obj == camera): return
 
 
@@ -55,8 +52,8 @@ class Window:
         obj.update()
         obj_tf = obj.transform
 
-        ot = copy.copy(obj.transform) # ot -> original transform
-        
+        ot = Transform.from_transform(obj.transform) # ot -> original transform
+
         obj_tf.x += self.current_camera.transform.x
         obj_tf.y += self.current_camera.transform.y
 

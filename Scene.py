@@ -127,6 +127,7 @@ class Scene:
     def add_object(self, obj: GameObject):
         self.objects.append(obj)
         obj.initialize(self)
+        
         return obj
     
     def add_multiple_objects(self, objs):

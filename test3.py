@@ -4,15 +4,9 @@ from __init__ import * # LUMINA ENGINE IMPORT
 init((800, 800))
 
 scene = Scene('main screen')
+scene.fill(light_blue)
 
 box = scene.add_object(Square(0, 0, 1, 1, blue))
-box.add_component(Rigidbody(box, False))
-
-# BOX2d physics support
-# DOESNT WORK RIGHT NOW :(
-
-ground = scene.add_object(Square(0, -1, 5, 1, red))
-ground.add_component(Rigidbody(ground, True))
 
 while True:
     scene.load()
