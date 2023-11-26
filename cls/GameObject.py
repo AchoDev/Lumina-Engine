@@ -18,10 +18,11 @@ class GameObject:
     def initialize(self, scene):
         self.b2Body = scene.physics_world.CreateDynamicBody(
             position=(self.transform.x, self.transform.y),
-            shapes=b2PolygonShape(box=self.transform.get_size())
+            shapes=b2PolygonShape(box=self.transform.get_size().to_tuple())
         )
-        self.b2Body.fixtures[0].filterData.categoryBits = 0x0000
-        self.b2Body.fixtures[0].filterData.maskBits = 0x0000
+        self.b2Body.type = 0
+        # self.b2Body.fixtures[0].filterData.categoryBits = 0x0000
+        # self.b2Body.fixtures[0].filterData.maskBits = 0x0000
 
         self.transform.set_target(self)
 
@@ -60,15 +61,6 @@ class GameObject:
         for component in self.components:
             component.update(scene)
 
-    def set_x(self, x):
-        self.x = x
-
-    def set_y(self, y):
-        self.y = y
-
-    def set_pos(self, pos):
-        self.x = pos[0]
-        self.y = pos[1]
 
     def set_transform(self, transform):
         self.x = transform.x
@@ -76,11 +68,6 @@ class GameObject:
         self.width = transform.width
         self.height = transform.height
 
-    def get_width(self):
-        return self.width
-
-    def get_height(self):
-        return self.height
 
     def get_animation(self):
         return self.__animation
@@ -115,42 +102,6 @@ class GameObject:
 
     def update(self):
         pass
-
-    def place_center(self, width, height):
-        self.x = width // 2 - self.width // 2
-        self.y = height // 2 - self.height // 2
-
-    def place_right(self, width):
-        self.x = width - self.width
-    
-    def place_left(self):
-        self.x = 0
-
-    def place_top(self):
-        self.y = 0
-
-    def place_bot(self, height):
-        self.y = height - self.height
-
-    def place_top_right(self, width):
-        self.place_right(width)
-        self.place_top()
-
-    def place_bot_left(self, height):
-        self.place_left()
-        self.place_bot(height)
-
-    def place_bot_right(self, width, height):
-        self.place_right(width)
-        self.place_bot(height)
-
-    def place_center_left(self, height):
-        self.x = 0
-        self.y = height // 2 - self.height // 2
-
-    def place_center_right(self, width, height):
-        self.x = width - self.width
-        self.y = height // 2 - self.height // 2
 
     @classmethod
     def with_transform(cls, transform):

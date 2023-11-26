@@ -96,7 +96,7 @@ class Scene:
 
         self.update_dimensions()
 
-        self.camera.original_transform.set(self.camera.transform)
+        original_cam_transform: Transform = Transform.from_transform(self.camera.transform)
 
         self.camera.transform.x += self.camera.orthographic_size / 2
 
@@ -106,7 +106,7 @@ class Scene:
 
         WIN.draw_many(self.objects, self.camera)
 
-        self.camera.transform.set(self.camera.original_transform)
+        self.camera.transform.set(original_cam_transform)
 
         if self.debug_mode:
             self.debug_window.draw()

@@ -23,7 +23,7 @@ class Rigidbody(Component):
 
         self.body.type = 2
 
-
+        self.body.active = True
         del self._density
 
 

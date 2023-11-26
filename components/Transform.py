@@ -36,7 +36,11 @@ class Transform(Component):
         if(self.b2Body == None):
             self._x = xPos
             return
-        self.b2Body.position.x = xPos
+        
+        self.b2Body.position.Set(xPos, self.b2Body.position.y)
+
+        if(self.width == 1000):
+            print(1000)
         
     @property
     def y(self):
@@ -49,7 +53,7 @@ class Transform(Component):
         if(self.b2Body == None):
             self._y = yPos
             return
-        self.b2Body.position.y = yPos
+        self.b2Body.position.Set(self.b2Body.position.x, yPos)
 
     @property
     def width(self):
@@ -89,10 +93,10 @@ class Transform(Component):
         self.height = transform.height
 
     def get_position(self):
-        return (self.x, self.y)
+        return Vector2(self.x, self.y)
     
     def get_size(self):
-        return (self.width, self.height)
+        return Vector2(self.width, self.height)
 
     def set_position(self, pos):
         self.x = pos.x
@@ -115,6 +119,15 @@ class Transform(Component):
             transform.width,
             transform.height
         )
+
+    @staticmethod
+    def inbetween(trA, trB):
+
+        result = Transform(0, 0, 0, 0)
+        result.x = (trA.x + trB.x) / 2
+        result.y = (trA.y + trB.y) / 2
+
+        return result
 
     def repr(self):
         return f'''\n
