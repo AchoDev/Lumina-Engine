@@ -11,13 +11,20 @@ sys.path.append("..")
 from components.Transform import Transform
 from delta_time import average_fps
 
+from editor_view import *
+
 window_ratio = Container(100)
 
 debug_mode = Container(False)
 class Window:
     def __init__(self, width, height, canvas_size, init=True):
-        self.width = width
-        self.height = height
+        self._width = width
+        self._height = height
+
+        self.editor_view = False
+
+        self.__editor_x = 300
+        self.__editor_y = 200
 
         if init: 
             self.win = pygame.display.set_mode((width, height), pygame.RESIZABLE, 32)
@@ -28,6 +35,47 @@ class Window:
 
         window_ratio.change(self.width / self.canvas_size[0])
 
+        self.toggle_editor_view()
+
+        self.__editor_components: list[EditorComponent] = [
+            EText('Lumina Editor-View', 20),
+            EHorizontalList([
+                EText('Mode: ', 15),
+                EButton('Static', 50, 20),
+                EButton('Free', 50, 20),
+            ])
+        ]
+
+    @property
+    def width(self):
+        if(self.editor_view): return self._width - self.__editor_x
+
+        return self._width
+    
+    @width.setter
+    def width(self, width):
+        self._width = width
+
+    @property
+    def height(self):
+        if(self.editor_view): return self._height - self.__editor_y
+
+        return self._height
+    
+    @height.setter
+    def height(self, height):
+        self._height = height
+
+    def toggle_editor_view(self):
+        self.editor_view = not self.editor_view
+
+        if(self.editor_view):
+            pygame.display.set_caption('Lumina-Engine Editor View')
+        else:
+            pygame.display.set_caption('Lumina-Engine window')
+
+
+
     def draw_many(self, objects, camera):
         for object in objects:
             # self.win.blit(object.get_body(), (object.x, object.y))
@@ -35,7 +83,6 @@ class Window:
 
     def draw_one(self, obj, camera):
         if(obj == camera): return
-
 
         self.current_camera = camera
         window_ratio.change(self.width / self.current_camera.orthographic_size)
@@ -47,7 +94,6 @@ class Window:
             original_font_size = obj.font_size
             obj.font_size = int(obj.font_size * ratio)             
         
-            
         obj.update()
         obj_tf = obj.transform
 
@@ -88,29 +134,54 @@ class Window:
     def update(self):
         pass
 
-    def draw_rect(self, obj, color, alpha=255):
-        t = obj.transform
+    def __editor_view_transform(self, tr):
+        new_tr = Transform.from_transform(tr)
         
+        if(self.editor_view):
+
+            xRatio = self._width / self.width
+            yRatio = self._height / self.height
+
+            new_tr.x *= xRatio
+            new_tr.y *= yRatio
+
+            new_tr.x += self.__editor_x
+            new_tr.y -= self.__editor_y
+            
+            new_tr.width *= xRatio
+            new_tr.height *= yRatio
+
+        return new_tr
+
+    def draw_rect(self, obj, color, alpha=255):
+        
+        t = self.__editor_view_transform(obj.transform)
+
         if alpha == 255 and t.angle == 0:
             rect = pygame.Rect(t.x, t.y, t.width, t.height)
             pygame.draw.rect(self.win, color, rect, 2 if obj.is_hollow else 0 ,border_radius=obj.border_radius)
         else:
-            s = pygame.Surface((t.width, t.height), pygame.SRCALPHA)
+            s = pygame.Surface(t.get_size().to_tuple(), pygame.SRCALPHA)
             s.set_alpha(alpha)
             s.fill(color)
             s = pygame.transform.rotate(s, -t.angle)
                     
-            self.win.blit(s, (t.x, t.y))
+            self.win.blit(s, t.get_position().to_tuple())
 
     def draw_transparent_square(self, obj, color, alpha):
-        s = pygame.Surface((obj.width, obj.height), pygame.SRCALPHA)
+
+        tr = self.__editor_view_transform(Transform(obj.x, obj.y, obj.width, obj.height))
+        s = pygame.Surface(tr.get_size().to_tuple(), pygame.SRCALPHA)
         s.set_alpha(alpha)
         s.fill(color)
-        self.win.blit(s, (obj.x, obj.y))
+        self.win.blit(s, tr.get_position().to_tuple())
 
     def draw_text(self, text, color, pos, font_size, font, bold=False):
         font = pygame.font.SysFont(font, font_size, bold)
-        self.win.blit(font.render(text, 1, color), pos)
+
+        tr = self.__editor_view_transform(Transform.from_position(pos))
+
+        self.win.blit(font.render(text, 1, color), tr.get_position().to_tuple())
 
     def draw_line(self, obj, color):
         pygame.draw.line(self.win, color, (obj.x1, obj.y1), (obj.x2, obj.y2), 1)
@@ -157,3 +228,38 @@ class Window:
     def get_rect(object):
         tr = object.transform
         return pygame.Rect(tr.x, tr.y, tr.width, tr.height)
+    
+    def update_editor_view(self):
+        if(self.editor_view):
+            self.draw_editor_view()
+
+    def draw_editor_view(self):
+        
+        white = (255, 255, 255)
+        main_color = (  
+           27, 25, 27
+        )
+
+        def draw_rect_abs(tr, color=main_color):
+            rect = pygame.Rect(tr.x, tr.y, tr.width, tr.height)
+            pygame.draw.rect(self.win, color, rect)
+        
+        draw_rect_abs(
+            Transform(0, 0, self.__editor_x, self._height)
+        )
+
+        draw_rect_abs(
+            Transform(
+                self.__editor_x,
+                self._height - self.__editor_y,
+                self._width - self.__editor_x,
+                self.__editor_y
+            )
+        )
+
+        current_y = 5
+
+        for component in self.__editor_components:
+            self.win.blit(component.get_surface(), (component.get_x(), current_y))
+            current_y += component.get_height()
+            current_y += 5

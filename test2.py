@@ -21,7 +21,6 @@ b3.add_component(Boxcollider())
 scene.camera.transform.x = 10
 
 
-# console.watch(lambda: get_mouse_pos(), 'mouse pos')
 
 while True:
     mouse_pos = scene.camera.window_to_world_position(get_mouse_pos())

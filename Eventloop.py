@@ -61,6 +61,7 @@ class Eventloop:
 
         delta_time.update_delta_time()
         console.draw_console()
+        WIN.update_editor_view()
         self.world.Step(delta_time.DELTA_TIME, 10, 10)
         self.world.ClearForces()
 

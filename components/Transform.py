@@ -133,6 +133,15 @@ class Transform(Component):
             transform.width,
             transform.height
         )
+    
+    @classmethod
+    def from_position(cls, pos: tuple):
+        return cls(
+            pos[0],
+            pos[1],
+            0,
+            0
+        )
 
     @staticmethod
     def inbetween(trA, trB):
@@ -142,6 +151,9 @@ class Transform(Component):
         result.y = (trA.y + trB.y) / 2
 
         return result
+
+    def __repr__(self) -> str:
+        return f'Transform(x: {self.x}, y: {self.y}, w: {self.width}, h: {self.height}, angle: {self.angle})'
 
     def repr(self):
         return f'''\n

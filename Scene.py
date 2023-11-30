@@ -78,8 +78,7 @@ class Scene:
 
         def toggle_debug():
             self.debug_mode = not self.debug_mode
-
-        self.add_event(KeyEvent(pygame.K_9, toggle_debug))
+            
 
     def get_window_ratio(self):
         return WIN.get_ratio()
@@ -128,6 +127,8 @@ class Scene:
 
         if self.debug_mode:
             self.debug_window.draw()
+
+        self.event_loop.add_event(KeyEvent('9', lambda: WIN.toggle_editor_view()))
 
         self.event_loop.update()
 
