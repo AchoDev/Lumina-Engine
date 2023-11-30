@@ -21,8 +21,7 @@ class Transform(Component):
         if(self.target.b2Body == None): return
 
         self.b2Body = target.b2Body
-        self.b2Body.position.x = self._x
-        self.b2Body.position.y = self._y
+        self.b2Body.position.Set(self._x, self._y)
         
 
     @property
@@ -39,8 +38,6 @@ class Transform(Component):
         
         self.b2Body.position.Set(xPos, self.b2Body.position.y)
 
-        if(self.width == 1000):
-            print(1000)
         
     @property
     def y(self):
@@ -75,14 +72,23 @@ class Transform(Component):
     def angle(self):
         if(self.b2Body == None):
             return self._angle
-        return self.b2Body.angle
+        return self.b2Body.angle * (180 / math.pi)
     
     @angle.setter
     def angle(self, angle):
         if(self.b2Body == None):
             self._angle = angle
             return
-        self.b2Body.angle = angle
+        self.b2Body.angle = angle * (math.pi / 180)
+
+    @property
+    def position(self) -> Vector2:
+        return Vector2(self.x, self.y)
+    
+    @position.setter
+    def position(self, pos):
+        self.x = pos.x
+        self.y = pos.y
 
     def set(self, transform):
         # self = copy.copy(transform)

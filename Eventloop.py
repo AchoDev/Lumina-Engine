@@ -1,6 +1,7 @@
 
 import pygame, console, delta_time
 from main import WIN
+from Input import current_mouse_wheel_scroll
 
 class Eventloop:
     def __init__(self, physics_world, events=[]):
@@ -12,6 +13,9 @@ class Eventloop:
         self.events.append(event)
 
     def update(self):
+
+        scrolling_hit = False
+
         custom_event_hits = []
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -41,11 +45,19 @@ class Eventloop:
                                 custom_event.hit()
                                 custom_event_hits.append(custom_event)
                         
-                        
+            if event.type == pygame.MOUSEWHEEL: 
+                scrolling_hit = True
+                current_mouse_wheel_scroll.x = event.x
+                current_mouse_wheel_scroll.y = event.y
+
         for custom_event in self.events:
             if not (custom_event in custom_event_hits):
                 custom_event.isHit = False
 
+
+        if(not scrolling_hit): 
+            current_mouse_wheel_scroll.x = 0
+            current_mouse_wheel_scroll.y = 0 
 
         delta_time.update_delta_time()
         console.draw_console()

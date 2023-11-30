@@ -2,6 +2,7 @@
 import pygame
 from components import Vector2
 
+
 key_map = {
     'left': pygame.K_LEFT,
     'right': pygame.K_RIGHT,
@@ -36,6 +37,8 @@ key_map = {
     'z': pygame.K_z,
 }
 
+current_mouse_wheel_scroll = Vector2(0, 0)
+
 def get_key(key):
     keys = pygame.key.get_pressed()
 
@@ -45,3 +48,9 @@ def get_key(key):
 
 def get_mouse_pos():    
     return Vector2.from_tuple(pygame.mouse.get_pos())
+
+def get_mouse():
+    return pygame.mouse.get_pressed()
+
+def get_mouse_scroll():
+    return current_mouse_wheel_scroll.y

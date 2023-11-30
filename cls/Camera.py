@@ -1,6 +1,7 @@
 
 from .GameObject import GameObject
 from components.Transform import Transform
+from components.Vector2 import Vector2
 
 class Camera(GameObject):
     def __init__(self, xPos, yPos, width, height):
@@ -11,12 +12,12 @@ class Camera(GameObject):
     def change_ortho(self, value):
         self.orthographic_size = value
 
-    def window_to_world_position(self, pos):
+    def window_to_world_position(self, pos) -> Vector2:
         
         winPosX = ((pos.x - self.transform.width / 2) / self.transform.width) * self.orthographic_size - self.transform.x
         
         ratio = self.transform.height / (self.transform.width / self.orthographic_size)
         winPosY = ((pos.y - self.transform.height / 2) / self.transform.height) * ratio - self.transform.y
 
-        return Transform(winPosX, winPosY, 0, 0)
+        return Vector2(winPosX, winPosY)
         

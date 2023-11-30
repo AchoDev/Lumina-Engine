@@ -8,6 +8,8 @@ from events.KeyEvent import KeyEvent
 from components.Draghandler import Draghandler
 from components.Transform import Transform
 
+import Input
+
 import delta_time
 
 from Box2D import *
@@ -67,10 +69,12 @@ class Scene:
 
         self.window_dimensions = Container((0, 0))
 
-        self.camera = self.add_object(Camera(0, 0, *WIN.canvas_size))
+        self.camera: Camera = self.add_object(Camera(0, 0, *WIN.canvas_size))
 
         self.debug_mode = False
         # self.debug_window = Object_List("Object List", objects=self.objects)
+
+        self.__previous_mouse_pos = None
 
         def toggle_debug():
             self.debug_mode = not self.debug_mode
@@ -80,9 +84,23 @@ class Scene:
     def get_window_ratio(self):
         return WIN.get_ratio()
     
+    def mouse_to_window(self):
+        return self.camera.window_to_world_position(Input.get_mouse_pos())
 
     def load(self):
 
+        if(self.__previous_mouse_pos != None):
+            current_mouse = Input.get_mouse_pos()
+            self.camera.transform.position += (current_mouse - self.__previous_mouse_pos) * (self.camera.orthographic_size / self.camera.transform.width)
+
+        if(Input.get_mouse()[1]):
+            self.__previous_mouse_pos = Input.get_mouse_pos()
+        else:
+            self.__previous_mouse_pos = None
+
+        self.camera.orthographic_size -= Input.get_mouse_scroll() * (self.camera.orthographic_size / 5)
+
+        
         if self.debug_mode:
             self.debug_window.refresh_components()
             self.debug_window.update()
@@ -112,6 +130,8 @@ class Scene:
             self.debug_window.draw()
 
         self.event_loop.update()
+
+        pass
 
     def update_dimensions(self):
         self.window_dimensions.change((WIN.width, WIN.height))

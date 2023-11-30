@@ -96,10 +96,11 @@ class Window:
             rect = pygame.Rect(t.x, t.y, t.width, t.height)
             pygame.draw.rect(self.win, color, rect, 2 if obj.is_hollow else 0 ,border_radius=obj.border_radius)
         else:
-            s = pygame.Surface((t.width, t.height))
+            s = pygame.Surface((t.width, t.height), pygame.SRCALPHA)
             s.set_alpha(alpha)
             s.fill(color)
-            s = pygame.transform.rotate(s, t.angle)
+            s = pygame.transform.rotate(s, -t.angle)
+                    
             self.win.blit(s, (t.x, t.y))
 
     def draw_transparent_square(self, obj, color, alpha):

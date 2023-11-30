@@ -21,8 +21,8 @@ class GameObject:
             shapes=b2PolygonShape(box=self.transform.get_size().to_tuple())
         )
         self.b2Body.type = 0
-        # self.b2Body.fixtures[0].filterData.categoryBits = 0x0000
-        # self.b2Body.fixtures[0].filterData.maskBits = 0x0000
+        self.b2Body.fixtures[0].filterData.categoryBits = 0x0000
+        self.b2Body.fixtures[0].filterData.maskBits = 0x0000
 
         self.transform.set_target(self)
 

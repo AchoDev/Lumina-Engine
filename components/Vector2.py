@@ -34,10 +34,16 @@ class Vector2:
         )
     
     def __mul__(self, other):
-        return Vector2(
-            self.x * other.x,
-            self.y * other.y
-        )
+        if(type(other) == 'Vector2'):
+            return Vector2(
+                self.x * other.x,
+                self.y * other.y
+            )
+        else:
+            return Vector2(
+                self.x * other,
+                self.y * other
+            )
         
     @classmethod
     def from_tuple(cls, tuple):
