@@ -12,6 +12,12 @@ class Vector2:
     def reset(self):
         self.x, self.y = 0
 
+    def copy_with(self, x=None, y=None):
+        return Vector2(
+            self.x if x == None else x,
+            self.y if y == None else y
+        )
+
     def __repr__(self) -> str:
         return f'Vector2({self.x}, {self.y})'
 

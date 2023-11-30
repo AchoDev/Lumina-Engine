@@ -117,6 +117,14 @@ class Transform(Component):
     def reset_size(self):
         self.width, self.height = 0
     
+    def copy_with(self, x=None, y=None, width=None, height=None):
+        return Transform(
+            self.x if x == None else x,
+            self.y if y == None else y,
+            self.width if width == None else width,
+            self.height if height == None else height
+        )
+
     @classmethod
     def from_transform(cls, transform):
         return cls(

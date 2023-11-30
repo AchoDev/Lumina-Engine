@@ -41,7 +41,6 @@ class Window:
         window_ratio.change(self.width / self.current_camera.orthographic_size)
         
 
-
         ratio = window_ratio.value # l + ratio
         
         if type(obj).__name__ == "Text":
@@ -104,10 +103,14 @@ class Window:
             self.win.blit(s, (t.x, t.y))
 
     def draw_transparent_square(self, obj, color, alpha):
-        s = pygame.Surface((obj.x * window_ratio.value, obj.y * window_ratio.value))
-        s.set_alpha(alpha)                
-        s.fill(color)           
-        self.win.blit(s, (obj.x * window_ratio.value, obj.y * window_ratio.value))
+        s = pygame.Surface((obj.width, obj.height), pygame.SRCALPHA)
+        s.set_alpha(alpha)
+        s.fill(color)
+        self.win.blit(s, (obj.x, obj.y))
+
+    def draw_text(self, text, color, pos, font_size, font, bold=False):
+        font = pygame.font.SysFont(font, font_size, bold)
+        self.win.blit(font.render(text, 1, color), pos)
 
     def draw_line(self, obj, color):
         pygame.draw.line(self.win, color, (obj.x1, obj.y1), (obj.x2, obj.y2), 1)

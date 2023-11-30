@@ -54,3 +54,4 @@ def get_mouse():
 
 def get_mouse_scroll():
     return current_mouse_wheel_scroll.y
+

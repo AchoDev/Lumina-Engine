@@ -21,13 +21,15 @@ b3.add_component(Boxcollider())
 scene.camera.transform.x = 10
 
 
+# console.watch(lambda: get_mouse_pos(), 'mouse pos')
+
 while True:
     mouse_pos = scene.camera.window_to_world_position(get_mouse_pos())
 
     if(get_key('a')):
         new = scene.add_object(Square(mouse_pos.x, mouse_pos.y, 0.5, 0.5, white))
         new.add_component(Rigidbody())
-        new.add_component(Boxcollider())     
+        new.add_component(Boxcollider())
 
     scene.load()
 
