@@ -115,11 +115,12 @@ class Scene:
 
         original_cam_transform: Transform = Transform.from_transform(self.camera.transform)
 
-        self.camera.transform.x += self.camera.orthographic_size / 2
+        # pixel per meter ratio
+        ratio = self.camera.transform.width / (self.camera.transform.height / ( self.camera.orthographic_size * 2 ))
 
-        ratio = self.camera.transform.height / (self.camera.transform.width / self.camera.orthographic_size)
+        self.camera.transform.x += ratio / 2
 
-        self.camera.transform.y += ratio / 2
+        self.camera.transform.y += self.camera.orthographic_size
 
         WIN.draw_many(self.objects, self.camera)
 

@@ -35,7 +35,7 @@ font = 'lucidaconsole'
 
 is_visible = False
 
-def watch(variable, name):
+def watch(variable, name='var'):
     __watch_list.insert(0, (variable, name))
 
 watch(lambda: round(delta_time.get_average_fps(), 2), 'fps')

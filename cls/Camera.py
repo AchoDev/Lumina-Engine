@@ -16,7 +16,7 @@ class Camera(GameObject):
         
         winPosX = ((pos.x - self.transform.width / 2) / self.transform.width) * self.orthographic_size - self.transform.x
         
-        ratio = self.transform.height / (self.transform.width / self.orthographic_size)
+        ratio = self.transform.width / (self.transform.height / (self.orthographic_size * 2))
         winPosY = ((pos.y - self.transform.height / 2) / self.transform.height) * ratio - self.transform.y
 
         return Vector2(winPosX, winPosY)

@@ -17,9 +17,13 @@ b.add_component(Boxcollider())
 b3 = scene.add_object(Square(0, 3, 10, 1, violet))
 b3.add_component(Boxcollider())
 
+debug_cube = scene.add_object(Square(0, 0, 1, 1, orchid))
 
 scene.camera.transform.x = 10
 
+console.watch(lambda: scene.camera.transform.get_position().x)
+console.watch(lambda: scene.camera.transform.get_position().y)
+console.watch(lambda: scene.camera.transform.get_size())
 
 
 while True:
@@ -29,6 +33,8 @@ while True:
         new = scene.add_object(Square(mouse_pos.x, mouse_pos.y, 0.5, 0.5, white))
         new.add_component(Rigidbody())
         new.add_component(Boxcollider())
+
+    debug_cube.transform.set_position(mouse_pos)
 
     scene.load()
 

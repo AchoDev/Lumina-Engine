@@ -1,6 +1,7 @@
 
 import pygame
 from .EditorComponent import EditorComponent
+from .collidepoint import collidepoint
 
 class EButton(EditorComponent):
     def __init__(self, text, width, height):
@@ -9,6 +10,9 @@ class EButton(EditorComponent):
         self.width = width
         self.height = height
 
+        self.clicked = False
+        self.hovered = False
+
     def get_width(self):
         return self.width
     
@@ -16,7 +20,15 @@ class EButton(EditorComponent):
         return self.height
 
     def update(self):
-        if 
+        mouse_pos = pygame.mouse.get_pos()
+
+        if(collidepoint(mouse_pos, (self.x, self.y, self.width, self.height))):
+            self.hovered = True
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            self.hovered = False
+            if(pygame.mouse.get_cursor().data[0] == pygame.SYSTEM_CURSOR_HAND):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     def get_surface(self):
 

@@ -35,15 +35,19 @@ class Window:
 
         window_ratio.change(self.width / self.canvas_size[0])
 
-        self.toggle_editor_view()
+        # self.toggle_editor_view()
+
+        self.__resize_editor_x = False
 
         self.__editor_components: list[EditorComponent] = [
             EText('Lumina Editor-View', 20),
             EHorizontalList([
                 EText('Mode: ', 15),
-                EButton('Static', 50, 20),
-                EButton('Free', 50, 20),
-            ])
+                # EButton('Static', 50, 20),
+                # EButton('Free', 50, 20),
+            ]),
+
+            EButton('Test', 50, 30)
         ]
 
     @property
@@ -69,12 +73,23 @@ class Window:
     def toggle_editor_view(self):
         self.editor_view = not self.editor_view
 
+        # if(self.editor_view):
+        #     pygame.display.set_caption('Lumina-Engine Editor View')
+        # else:
+        #     pygame.display.set_caption('Lumina-Engine window')
+
+
+    def validate_absolute_position(self, pos):
+        x_res = pos[0]
+        y_res = pos[1]
         if(self.editor_view):
-            pygame.display.set_caption('Lumina-Engine Editor View')
-        else:
-            pygame.display.set_caption('Lumina-Engine window')
+            x_res /= self.width / self._width
+            y_res /= self.height / self._height
 
-
+            x_res -= self.__editor_x
+            y_res -= self.__editor_y
+            
+        return (x_res, y_res)
 
     def draw_many(self, objects, camera):
         for object in objects:
@@ -85,7 +100,7 @@ class Window:
         if(obj == camera): return
 
         self.current_camera = camera
-        window_ratio.change(self.width / self.current_camera.orthographic_size)
+        window_ratio.change(self.height / (self.current_camera.orthographic_size * 2))
         
 
         ratio = window_ratio.value # l + ratio
@@ -231,6 +246,32 @@ class Window:
     
     def update_editor_view(self):
         if(self.editor_view):
+
+            for component in self.__editor_components:
+                component.update()
+
+            resize_wiggle = 10
+            mouse_pos = pygame.mouse.get_pos()
+            is_colliding = collidepoint(mouse_pos, (
+                self.__editor_x - resize_wiggle / 2, 
+                0,
+                resize_wiggle,
+                self._height
+            ))
+
+            if(is_colliding):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_SIZEWE)
+
+                if(pygame.mouse.get_pressed()[0]):
+                    self.__resize_editor_x = True
+                else:
+                    self.__resize_editor_x = False
+
+            elif(pygame.mouse.get_cursor().data[0] == pygame.SYSTEM_CURSOR_SIZEWE):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+            if(self.__resize_editor_x): self.__editor_x = mouse_pos[0]
+
             self.draw_editor_view()
 
     def draw_editor_view(self):
@@ -248,6 +289,9 @@ class Window:
             Transform(0, 0, self.__editor_x, self._height)
         )
 
+        object_viewer = pygame.Surface((self.__editor_x, self._height))
+        object_viewer.fill(main_color)
+
         draw_rect_abs(
             Transform(
                 self.__editor_x,
@@ -260,6 +304,11 @@ class Window:
         current_y = 5
 
         for component in self.__editor_components:
-            self.win.blit(component.get_surface(), (component.get_x(), current_y))
+            object_viewer.blit(component.get_surface(), (component.x, current_y))
+            
+            component.y = current_y
+
             current_y += component.get_height()
             current_y += 5
+
+        self.win.blit(object_viewer, (0, 0))

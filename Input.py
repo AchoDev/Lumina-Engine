@@ -1,7 +1,7 @@
 
 import pygame
 from components import Vector2
-
+from main import WIN
 
 key_map = {
 
@@ -58,8 +58,10 @@ def get_key(key):
 
     return False
 
-def get_mouse_pos():    
-    return Vector2.from_tuple(pygame.mouse.get_pos())
+def get_mouse_pos():
+    return Vector2.from_tuple(WIN.validate_absolute_position(
+        pygame.mouse.get_pos()
+    ))
 
 def get_mouse():
     return pygame.mouse.get_pressed()
