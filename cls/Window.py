@@ -11,6 +11,7 @@ sys.path.append("..")
 from components.Transform import Transform
 from delta_time import average_fps
 
+
 from editor_view import *
 
 window_ratio = Container(100)
@@ -35,20 +36,63 @@ class Window:
 
         window_ratio.change(self.width / self.canvas_size[0])
 
-        # self.toggle_editor_view()
+        self.toggle_editor_view()
 
         self.__resize_editor_x = False
+        self.__resize_inspector_y = False
+
+        self.__editor_mouse_event = Container()
+        self.__editor_selected_object = None
+
+        self.__object_viewer = EObjectViewer()
+        self.__inspector = EInspector()
+
+        button_width = 65
+        button_height = 25
+        text_size = 17
+
+        self.__current_scene = None
+        self.__scene_objects = []
+
 
         self.__editor_components: list[EditorComponent] = [
-            EText('Lumina Editor-View', 20),
-            EHorizontalList([
-                EText('Mode: ', 15),
-                # EButton('Static', 50, 20),
-                # EButton('Free', 50, 20),
-            ]),
+            ECenter(
+                EText('Lumina Editor-View', 20),
+            ),
+            EDivider(),
+            ECenter(
+                EHorizontalList([
+                    EText('View ', text_size),
+                    EButton('Game', button_width, button_height),
+                    EButton('Editor', button_width, button_height),
+                ], 20),
+            ),
+            ECenter(
+                EHorizontalList([
+                    EText('Mode ', text_size),
+                    EButton('Static', button_width, button_height),
+                    EButton('Free', button_width, button_height),
+                ], 20),
+            ),
 
-            EButton('Test', 50, 30)
+            EDivider(),
+
+            ECenter(
+                EText('Objects in scene', 20)
+            ),
+
+            self.__object_viewer,
+            self.__inspector,
         ]
+
+    @property
+    def current_scene(self):
+        return self.__current_scene
+
+    @current_scene.setter
+    def current_scene(self, scene):
+        self.__current_scene = scene
+        self.__scene_objects = scene.objects
 
     @property
     def width(self):
@@ -244,13 +288,26 @@ class Window:
         tr = object.transform
         return pygame.Rect(tr.x, tr.y, tr.width, tr.height)
     
+    def __set_editor_selected_object(self, obj):
+        self.__editor_selected_object = obj
+
     def update_editor_view(self):
         if(self.editor_view):
+            
+            self.__object_viewer.onclick = lambda obj: self.__set_editor_selected_object(obj)
+            self.__object_viewer.scene = self.current_scene
+            
+            self.__inspector.selected_object = self.__editor_selected_object
+            self.__inspector.height = self._height - self.__object_viewer.y - self.__object_viewer.get_height()
+            self.__inspector.y = self.__object_viewer.y + self.__object_viewer.height
 
             for component in self.__editor_components:
-                component.update()
+                component.update(self.__editor_mouse_event)
+
 
             resize_wiggle = 10
+            resize_wiggle_y = 20
+            
             mouse_pos = pygame.mouse.get_pos()
             is_colliding = collidepoint(mouse_pos, (
                 self.__editor_x - resize_wiggle / 2, 
@@ -259,23 +316,45 @@ class Window:
                 self._height
             ))
 
+            is_colliding_inspector = collidepoint(mouse_pos, (
+                0, 
+                self.__inspector.y - resize_wiggle_y / 2,
+                self.__editor_x,
+                resize_wiggle
+            ))
+
             if(is_colliding):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_SIZEWE)
+                self.__editor_mouse_event.value = self
 
                 if(pygame.mouse.get_pressed()[0]):
                     self.__resize_editor_x = True
                 else:
                     self.__resize_editor_x = False
-
-            elif(pygame.mouse.get_cursor().data[0] == pygame.SYSTEM_CURSOR_SIZEWE):
+            elif(self.__editor_mouse_event.value == self):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
+            if(is_colliding_inspector):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_SIZENS)
+                self.__editor_mouse_event.value = self.__inspector
+
+                if(pygame.mouse.get_pressed()[0]):
+                    self.__resize_inspector_y = True
+                else:
+                    self.__resize_inspector_y = False
+            elif(self.__editor_mouse_event.value == self.__inspector):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+
             if(self.__resize_editor_x): self.__editor_x = mouse_pos[0]
+            if(self.__resize_inspector_y): 
+                self.__inspector.y = mouse_pos[1] - resize_wiggle
+                self.__object_viewer.height = mouse_pos[1] - self.__object_viewer.y
+                self.__inspector.height = self._height - self.__object_viewer.y - self.__object_viewer.get_height()
 
             self.draw_editor_view()
 
     def draw_editor_view(self):
-        
         white = (255, 255, 255)
         main_color = (  
            27, 25, 27
@@ -292,6 +371,7 @@ class Window:
         object_viewer = pygame.Surface((self.__editor_x, self._height))
         object_viewer.fill(main_color)
 
+
         draw_rect_abs(
             Transform(
                 self.__editor_x,
@@ -300,13 +380,13 @@ class Window:
                 self.__editor_y
             )
         )
+        pygame.draw.line(self.win, white, (self.__editor_x, self._height - self.__editor_y), (self.__editor_x, self._height), 1)
 
         current_y = 5
 
         for component in self.__editor_components:
-            object_viewer.blit(component.get_surface(), (component.x, current_y))
-            
             component.y = current_y
+            object_viewer.blit(component.get_surface(self.__editor_x), (component.x, current_y))
 
             current_y += component.get_height()
             current_y += 5

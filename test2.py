@@ -1,6 +1,6 @@
 from __init__ import *
 
-window_dim = (1000, 800)
+window_dim = (1600, 900)
 init(window_dim)
 
 scene = Scene("t")
@@ -21,9 +21,11 @@ debug_cube = scene.add_object(Square(0, 0, 1, 1, orchid))
 
 scene.camera.transform.x = 10
 
-console.watch(lambda: scene.camera.transform.get_position().x)
-console.watch(lambda: scene.camera.transform.get_position().y)
-console.watch(lambda: scene.camera.transform.get_size())
+console.watch(lambda: scene.camera.transform.get_position().x, 'camX')
+console.watch(lambda: scene.camera.transform.get_position().y, 'camY')
+console.watch(lambda: scene.camera.transform.get_size(), 'camSize')
+
+scene.add_event(KeyEvent('h', lambda: console.log('hello achodev.me!')))
 
 
 while True:

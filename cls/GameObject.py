@@ -4,12 +4,15 @@ sys.path.append("..")
 from components.Transform import Transform
 from components.Component import Component
 
+
+
 from Box2D import b2PolygonShape, b2Body
 
 class GameObject:
     def __init__(self, xPos=0, yPos=0, width = 1, height = 1):
         self.__animation = None
 
+        self.name = 'GameObject'
         self.children = []
         self.components = []
         self.b2Body: b2Body = None
@@ -29,7 +32,8 @@ class GameObject:
         for component in self.components:
             component.initialize()
 
-
+    def editor_repr(self):
+        return []
 
     def attach_animation(self, animation):
         self.__animation = animation

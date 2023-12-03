@@ -88,6 +88,8 @@ class Scene:
 
     def load(self):
 
+        WIN.current_scene = self
+
         if(self.__previous_mouse_pos != None):
             current_mouse = Input.get_mouse_pos()
             self.camera.transform.position += (current_mouse - self.__previous_mouse_pos) * (self.camera.orthographic_size / self.camera.transform.width)

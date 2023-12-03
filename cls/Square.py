@@ -11,6 +11,7 @@ class Square(GameObject):
         self.color = color
         self.border_radius = border_radius
         self.is_hollow = hollow
+        self.name = 'Square'
 
     def draw(self, window):
         super().draw(window)

@@ -1,8 +1,11 @@
 
 from .Component import Component
 from .Vector2 import Vector2
-import copy
-import math
+import math, sys
+
+sys.path.append('..')
+
+from editor_view import *
 
 class Transform(Component):
     def __init__(self, xPos, yPos, width, height):
@@ -90,9 +93,23 @@ class Transform(Component):
         self.x = pos.x
         self.y = pos.y
 
+    def editor_repr(self):
+        return [
+            
+            EHorizontalList([
+                EText('Position', 15), 
+                EHorizontalList([EText('x', 12), EInputField(30, 15), EText('y', 12), EInputField(30, 15)]
+            )], space_evenly=True),
+
+            EHorizontalList([
+                EText('Scale', 15),
+                EHorizontalList([EText('x', 12), EInputField(30, 15), EText('y', 12), EInputField(30, 15)], 
+            )], space_evenly=True),
+            EHorizontalList([EText('Rotation', 15), EInputField(50, 15)]),
+        ]
+
     def set(self, transform):
         # self = copy.copy(transform)
-
         self.x = transform.x
         self.y = transform.y
         self.width = transform.width

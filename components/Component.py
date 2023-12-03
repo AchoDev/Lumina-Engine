@@ -5,6 +5,7 @@ sys.path.append("..")
 
 from cls import GameObject
 
+
 class Component:
     def __init__(self):
         self.target: GameObject = None

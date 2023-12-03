@@ -19,27 +19,32 @@ class EButton(EditorComponent):
     def get_height(self):
         return self.height
 
-    def update(self):
+    def update(self, mouse_event):
         mouse_pos = pygame.mouse.get_pos()
 
         if(collidepoint(mouse_pos, (self.x, self.y, self.width, self.height))):
             self.hovered = True
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            mouse_event.value = self
+
         else:
             self.hovered = False
-            if(pygame.mouse.get_cursor().data[0] == pygame.SYSTEM_CURSOR_HAND):
+            if(mouse_event.value == self):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-    def get_surface(self):
+    def get_surface(self, editor_width):
 
         white = (255, 255, 255)
         black = (0, 0, 0)
 
-        back = pygame.Surface((self.width, self.height))
-        back.fill(white)
+        back = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
+        
+        pygame.draw.rect(back, self.white, (0, 0, self.width, self.height), border_radius=2)
 
         font = pygame.font.SysFont('lucidasanstypewriter', 15)
-        back.blit(font.render(self.text, 1, black), (0, 0))
+        text_size = font.size(self.text)
+
+        back.blit(font.render(self.text, 1, black), (self.width / 2 - text_size[0] / 2, self.height / 2 - text_size[1] / 2))
 
         return back
     
