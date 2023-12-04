@@ -20,6 +20,10 @@ class EObjectViewer(EditorComponent):
         if(self.buttons == []):
             self.buttons = [EObjectButton(obj.__class__.__name__, lambda: self.onclick(obj)) for obj in self.scene.objects]
 
+        if(len(self.buttons) != len(self.scene.objects)):
+            for obj in self.scene.objects[ len(self.scene.objects) - len(self.buttons) : len(self.scene.objects) ]:
+                self.buttons.append(EObjectButton(obj.__class__.__name__, lambda: self.onclick(obj)))
+
         for button in self.buttons:
             button.update(mouse_event)
 

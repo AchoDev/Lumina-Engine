@@ -17,7 +17,8 @@ class EInspector(EditorComponent):
         
         back.blit(EDivider(margin=0).get_surface(editor_width), (0, 0))
 
-        back.blit(ECenter(EText('Inspector', 20)).get_surface(editor_width), (0, 30))
+        head_text = ECenter(EText('Inspector', 20))
+        back.blit(head_text.get_surface(editor_width), (0, 30))
 
 
         if(self.selected_object == None):
@@ -27,7 +28,7 @@ class EInspector(EditorComponent):
 
             return back
 
-        current_y = 30
+        current_y = 30 + head_text.child.font_render.size('Inspector')[1]
         for component in self.selected_object.components:
             card_height = 0
             editor_components = component.editor_repr()
@@ -37,7 +38,7 @@ class EInspector(EditorComponent):
             
             card = pygame.Surface((editor_width, card_height), pygame.SRCALPHA)
             text = EText(component.__class__.__name__, 18)
-            card.blit(text.get_surface(editor_width), (30, 0))
+            card.blit(text.get_surface(editor_width), (10, 0))
 
             current_card_y = text.font_render.size(text.text)[1]
             for editor_component in editor_components:
@@ -46,9 +47,9 @@ class EInspector(EditorComponent):
                 current_card_y += editor_component.get_height()
 
                
-            c = pygame.Surface((200, 76))
-            c.fill(self.red)
-            print(back.blit(c, (0, 0)))
+            # c = pygame.Surface((200, 76))
+            # # c.fill(self.red)
+            # print(back.blit(c, (0, 0)))
 
             back.blit(card, (0, current_y))
             current_y += current_card_y

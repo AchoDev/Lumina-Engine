@@ -8,6 +8,8 @@ from Box2D import b2Fixture, b2Body
 
 sys.path.append("..")
 
+from editor_view import *
+
 class Rigidbody(Component):
     def __init__(self):
         super().__init__()
@@ -26,6 +28,22 @@ class Rigidbody(Component):
         self.body.active = True
         del self._density
 
+    def editor_repr(self):
+        text_size = 15
+        return [
+            EHorizontalList(
+                [EText('Mass', text_size), EInputField(50, 20)], space_evenly=True
+            ),
+            EHorizontalList(
+                [EText('Linear drag', text_size), EInputField(50, 20)], space_evenly=True
+            ),
+            EHorizontalList(
+                [EText('Angular drag', text_size), EInputField(50, 20)], space_evenly=True
+            ),
+            EHorizontalList(
+                [EText('Gravity scale', text_size), EInputField(50, 20)], space_evenly=True
+            ),
+        ]
 
     @property
     def fixed_rotation(self):
