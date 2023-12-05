@@ -96,16 +96,25 @@ class Transform(Component):
     def editor_repr(self):
         return [
             
-            EHorizontalList([
-                EText('Position', 15), 
-                EHorizontalList([EText('x', 12), EInputField(30, 15), EText('y', 12), EInputField(30, 15)]
-            )], space_evenly=True),
 
-            EHorizontalList([
-                EText('Scale', 15),
-                EHorizontalList([EText('x', 12), EInputField(30, 15), EText('y', 12), EInputField(30, 15)], 
-            )], space_evenly=True),
-            EHorizontalList([EText('Rotation', 15), EInputField(50, 15)]),
+            EText(f'Position:', 15),
+            EText(f'x: {self.x}', 15),
+            EText(f'y: {self.y}', 15),
+            
+            EText(f'Scale:', 15),
+            EText(f'width: {self.width}', 15),
+            EText(f'height: {self.height}', 15),
+            
+            # EHorizontalList([
+            #     EText('Position', 15), 
+            #     # EHorizontalList([EText('x', 12), EInputField(30, 15), EText('y', 12), EInputField(30, 15)]
+            # )], space_evenly=True),
+
+            # EHorizontalList([
+            #     EText('Scale', 15),
+            #     EHorizontalList([EText('x', 12), EInputField(30, 15), EText('y', 12), EInputField(30, 15)], 
+            # )], space_evenly=True),
+            # EHorizontalList([EText('Rotation', 15), EInputField(50, 15)]),
         ]
 
     def set(self, transform):

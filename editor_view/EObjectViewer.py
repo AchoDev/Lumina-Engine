@@ -20,9 +20,9 @@ class EObjectViewer(EditorComponent):
         if(self.buttons == []):
             self.buttons = [EObjectButton(obj.__class__.__name__, lambda: self.onclick(obj)) for obj in self.scene.objects]
 
-        if(len(self.buttons) != len(self.scene.objects)):
-            for obj in self.scene.objects[ len(self.scene.objects) - len(self.buttons) : len(self.scene.objects) ]:
-                self.buttons.append(EObjectButton(obj.__class__.__name__, lambda: self.onclick(obj)))
+        # if(len(self.buttons) != len(self.scene.objects)):
+        #     for obj in self.scene.objects[ len(self.scene.objects) - len(self.buttons) : len(self.scene.objects) ]:
+        #         self.buttons.append(EObjectButton(obj.__class__.__name__, lambda: self.onclick(obj)))
 
         for button in self.buttons:
             button.update(mouse_event)
@@ -80,7 +80,7 @@ class EObjectButton(EditorComponent):
     def get_surface(self, editor_width):
         self.width = editor_width
 
-        back = pygame.Surface((editor_width, self.height))
+        back = pygame.Surface((editor_width, self.height), pygame.SRCALPHA)
         back.fill(self.dark_gray)
         text = EText(self.name, 14)
         back.blit(text.get_surface(editor_width), (25, self.height / 2 - text.get_height() / 2))

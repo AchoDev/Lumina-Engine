@@ -10,7 +10,7 @@ class EText(EditorComponent):
         self.color = color
         self.font = 'lucidasanstypewriter'
 
-        self.font_render = pygame.font.SysFont('lucidasanstypewriter', self.size)
+        self.font_render = pygame.font.SysFont('lucidasanstypewriter', self.size)    
 
     def get_height(self):
         return self.font_render.size(self.text)[1]
