@@ -210,6 +210,8 @@ class Window:
             new_tr.width *= xRatio
             new_tr.height *= yRatio
 
+        print(tr.angle)
+
         return new_tr
 
     def draw_rect(self, obj, color, alpha=255):

@@ -153,12 +153,15 @@ class Transform(Component):
 
     @classmethod
     def from_transform(cls, transform):
-        return cls(
+        new_tr = cls(
             transform.x,
             transform.y,
             transform.width,
             transform.height
         )
+
+        new_tr.angle = transform.angle
+        return new_tr
     
     @classmethod
     def from_position(cls, pos: tuple):
