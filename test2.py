@@ -1,10 +1,13 @@
 from __init__ import *
 
-window_dim = (1600, 900)
+window_dim = (1920, 1080)
 init(window_dim)
 
 scene = Scene("t")
 scene.fill(light_blue)
+
+for modes in pygame.display.list_modes():
+    print(modes)
 
 b = scene.add_object(Square(-5.1, 0, 1, 1, green))
 b.add_component(Rigidbody())

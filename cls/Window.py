@@ -210,7 +210,6 @@ class Window:
             new_tr.width *= xRatio
             new_tr.height *= yRatio
 
-        print(tr.angle)
 
         return new_tr
 
