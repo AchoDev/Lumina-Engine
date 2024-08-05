@@ -191,16 +191,11 @@ class Window:
         obj_tf.width *= ratio
         obj_tf.height *= ratio
         
-        print(obj_tf)
-
         obj.draw(self)
 
         self.draw_obj_handles(obj_tf)
 
-
         obj.transform.set(ot)
-
-       
 
         for child in obj.children:
             child_ot = copy.copy(child.transform)

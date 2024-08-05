@@ -18,14 +18,8 @@ class Camera(GameObject):
     def window_to_world_position(self, pos: Vector2) -> Vector2:
         pixel_per_meter = self.transform.height / (self.orthographic_size * 2)
 
-        winPosX = pos.x / pixel_per_meter + self.transform.x
-        # print(pos.x / pixel_per_meter, self.transform.x)
+        winPosX = (pos.x / pixel_per_meter + self.transform.x) - (self.transform.width / pixel_per_meter) / 2
+        winPoxY = (pos.y / pixel_per_meter + self.transform.y) - (self.transform.height / pixel_per_meter) / 2
 
-        # winPosX = ((pos.x - self.transform.width / 2) / self.transform.width) * self.orthographic_size - self.transform.x
-        
-        # ratio = self.transform.width / (self.transform.height / (self.orthographic_size * 2))
-        # winPosY = ((pos.y - self.transform.height / 2) / self.transform.height) * ratio - self.transform.y
-
-
-        return Vector2(winPosX, 0)
+        return Vector2(winPosX, winPoxY)
         
