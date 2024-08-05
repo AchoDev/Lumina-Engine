@@ -5,6 +5,7 @@ from .Container import Container
 from .Square import Square
 from . import Colors
 from .Text import Text
+from .Camera import Camera
 
 sys.path.append("..")
 
@@ -36,7 +37,7 @@ class Window:
 
         window_ratio.change(self.width / self.canvas_size[0])
 
-        self.toggle_editor_view()
+        # self.toggle_editor_view()
 
         self.__resize_editor_x = False
         self.__resize_inspector_y = False
@@ -127,8 +128,8 @@ class Window:
         x_res = pos[0]
         y_res = pos[1]
         if(self.editor_view):
-            x_res /= self.width / self._width
-            y_res /= self.height / self._height
+            # x_res /= self.width / self._width
+            # y_res /= self.height / self._height
 
             x_res -= self.__editor_x
             y_res -= self.__editor_y
@@ -140,7 +141,7 @@ class Window:
             # self.win.blit(object.get_body(), (object.x, object.y))
             self.draw_one(object, camera)
 
-    def draw_one(self, obj, camera):
+    def draw_one(self, obj, camera: Camera):
         if(obj == camera): return
 
         self.current_camera = camera
@@ -198,17 +199,17 @@ class Window:
         
         if(self.editor_view):
 
-            xRatio = self._width / self.width
-            yRatio = self._height / self.height
+            # xRatio = self._width / self.width
+            # yRatio = self._height / self.height
 
-            new_tr.x *= xRatio
-            new_tr.y *= yRatio
+            # new_tr.x *= xRatio
+            # new_tr.y *= yRatio
 
             new_tr.x += self.__editor_x
             new_tr.y -= self.__editor_y
             
-            new_tr.width *= xRatio
-            new_tr.height *= yRatio
+            # new_tr.width *= xRatio
+            # new_tr.height *= yRatio
 
 
         return new_tr

@@ -28,6 +28,7 @@ scene.camera.transform.x = 10
 console.watch(lambda: scene.camera.transform.get_position().x, 'camX')
 console.watch(lambda: scene.camera.transform.get_position().y, 'camY')
 console.watch(lambda: scene.camera.transform.get_size(), 'camSize')
+console.watch(lambda: scene.camera.orthographic_size, 'orthoSize')
 
 scene.add_event(KeyEvent('h', lambda: console.log('hello achodev.me!')))
 
