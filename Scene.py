@@ -92,7 +92,7 @@ class Scene:
 
         if(self.__previous_mouse_pos != None):
             current_mouse = Input.get_mouse_pos()
-            self.camera.transform.position += (current_mouse - self.__previous_mouse_pos) * (self.camera.orthographic_size / self.camera.transform.width)
+            self.camera.transform.position -= (current_mouse - self.__previous_mouse_pos) * (self.camera.orthographic_size / self.camera.transform.width)
 
         if(Input.get_mouse()[2]):
             self.__previous_mouse_pos = Input.get_mouse_pos()

@@ -19,7 +19,7 @@ class Camera(GameObject):
         pixel_per_meter = self.transform.height / (self.orthographic_size * 2)
 
         winPosX = pos.x / pixel_per_meter + self.transform.x
-        print(pos.x / pixel_per_meter, self.transform.x)
+        # print(pos.x / pixel_per_meter, self.transform.x)
 
         # winPosX = ((pos.x - self.transform.width / 2) / self.transform.width) * self.orthographic_size - self.transform.x
         

@@ -6,6 +6,7 @@ from .Square import Square
 from . import Colors
 from .Text import Text
 from .Camera import Camera
+from .Triangle import Triangle
 
 sys.path.append("..")
 
@@ -141,6 +142,24 @@ class Window:
             # self.win.blit(object.get_body(), (object.x, object.y))
             self.draw_one(object, camera)
 
+    def draw_obj_handles(self, tr):
+        nav_tf = Transform.from_transform(tr)
+        
+        nav_tf.width = 4
+        nav_tf.height = 100
+        nav_tf.x += tr.width / 2
+        nav_tf.y -= nav_tf.height - tr.height / 2
+
+        triangle_tr = Transform.from_transform(nav_tf)
+        triangle_tr.width = 10
+        triangle_tr.height = 10
+        triangle_tr.x -= triangle_tr.width / 2 - nav_tf.width / 2
+        triangle_tr.y -= triangle_tr.height
+
+        Triangle(triangle_tr.x, triangle_tr.y, triangle_tr.width, triangle_tr.height, Colors.red).draw(self)
+        Square(nav_tf.x, nav_tf.y, nav_tf.width, nav_tf.height, Colors.red).draw(self)
+
+
     def draw_one(self, obj, camera: Camera):
         if(obj == camera): return
 
@@ -159,8 +178,8 @@ class Window:
 
         ot = Transform.from_transform(obj.transform) # ot -> original transform
 
-        obj_tf.x += self.current_camera.transform.x
-        obj_tf.y += self.current_camera.transform.y
+        obj_tf.x -= self.current_camera.transform.x
+        obj_tf.y -= self.current_camera.transform.y
 
         obj_tf.x -= obj_tf.width / 2
         obj_tf.y -= obj_tf.height / 2
@@ -168,12 +187,19 @@ class Window:
         obj_tf.x *= ratio
         obj_tf.y *= ratio
         
+        print(obj_tf.x)
+
         obj_tf.width *= ratio
         obj_tf.height *= ratio
 
         obj.draw(self)
 
+        self.draw_obj_handles(obj_tf)
+
+
         obj.transform.set(ot)
+
+       
 
         for child in obj.children:
             child_ot = copy.copy(child.transform)
@@ -270,7 +296,7 @@ class Window:
         self.height = scale[1]
         self.canvas_size = canvas
 
-        self.win = pygame.display.set_mode(scale, pygame.RESIZABLE, 0)
+        self.win = pygame.display.set_mode(scale, pygame.RESIZABLE, 0, display=0)
         pygame.display.set_caption('Lumina-Engine window')
 
 
