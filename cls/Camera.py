@@ -6,7 +6,7 @@ from components.Vector2 import Vector2
 class Camera(GameObject):
     def __init__(self, xPos, yPos, width, height):
         super().__init__(xPos, yPos, width, height)
-        self.orthographic_size = 100
+        self.orthographic_size = 10
         self.name = 'Camera'
         self.window_position: Vector2 = Vector2(0, 0)
         

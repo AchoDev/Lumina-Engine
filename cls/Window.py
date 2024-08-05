@@ -156,8 +156,8 @@ class Window:
         triangle_tr.x -= triangle_tr.width / 2 - nav_tf.width / 2
         triangle_tr.y -= triangle_tr.height
 
-        Triangle(triangle_tr.x, triangle_tr.y, triangle_tr.width, triangle_tr.height, Colors.red).draw(self)
-        Square(nav_tf.x, nav_tf.y, nav_tf.width, nav_tf.height, Colors.red).draw(self)
+        Triangle(triangle_tr.x, triangle_tr.y, triangle_tr.width, triangle_tr.height, Colors.green).draw(self)
+        Square(nav_tf.x, nav_tf.y, nav_tf.width, nav_tf.height, Colors.green).draw(self)
 
 
     def draw_one(self, obj, camera: Camera):
@@ -178,19 +178,20 @@ class Window:
 
         ot = Transform.from_transform(obj.transform) # ot -> original transform
 
-        obj_tf.x -= self.current_camera.transform.x
-        obj_tf.y -= self.current_camera.transform.y
+        obj_tf.x -= self.current_camera.transform.x - (self.width / ratio) / 2
+        obj_tf.y -= self.current_camera.transform.y - (self.height / ratio) / 2
+
 
         obj_tf.x -= obj_tf.width / 2
         obj_tf.y -= obj_tf.height / 2
 # 
         obj_tf.x *= ratio
         obj_tf.y *= ratio
-        
-        print(obj_tf.x)
 
         obj_tf.width *= ratio
         obj_tf.height *= ratio
+        
+        print(obj_tf)
 
         obj.draw(self)
 

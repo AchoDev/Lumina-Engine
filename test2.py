@@ -23,7 +23,7 @@ b3.add_component(Boxcollider())
 # debug_cube = scene.add_object(Square(0, 0, 1, 1, orchid))
 # debug_cube.name = 'DEBUG CUBE'
 
-scene.camera.transform.x = 10
+# scene.camera.transform.x = 10
 
 console.watch(lambda: scene.camera.transform.get_position().x, 'camX')
 console.watch(lambda: scene.camera.transform.get_position().y, 'camY')

@@ -115,18 +115,18 @@ class Scene:
 
         self.update_dimensions()
 
-        original_cam_transform: Transform = Transform.from_transform(self.camera.transform)
+        # original_cam_transform: Transform = Transform.from_transform(self.camera.transform)
 
         # pixel per meter ratio
-        ratio = self.camera.transform.width / (self.camera.transform.height / ( self.camera.orthographic_size * 2 ))
+        # ratio = self.camera.transform.width / (self.camera.transform.height / ( self.camera.orthographic_size * 2 ))
 
-        self.camera.transform.x += ratio / 2
+        # self.camera.transform.x += ratio / 2
 
-        self.camera.transform.y += self.camera.orthographic_size
+        # self.camera.transform.y += self.camera.orthographic_size
 
         WIN.draw_many(self.objects, self.camera)
 
-        self.camera.transform.set(original_cam_transform)
+        # self.camera.transform.set(original_cam_transform)
 
         if self.debug_mode:
             self.debug_window.draw()
