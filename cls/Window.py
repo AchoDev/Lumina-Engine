@@ -142,7 +142,7 @@ class Window:
             # self.win.blit(object.get_body(), (object.x, object.y))
             self.draw_one(object, camera)
 
-    def draw_obj_handles(self, tr):
+    def draw_obj_handles(self, tr: Transform):
         nav_tf = Transform.from_transform(tr)
         
         nav_tf.width = 4
@@ -158,6 +158,9 @@ class Window:
 
         Triangle(triangle_tr.x, triangle_tr.y, triangle_tr.width, triangle_tr.height, Colors.green).draw(self)
         Square(nav_tf.x, nav_tf.y, nav_tf.width, nav_tf.height, Colors.green).draw(self)
+
+        Square(tr.x + tr.width / 2, tr.y + tr.height / 2, 100, 4, Colors.red).draw(self)
+        Triangle(tr.x + tr.width / 2 + 100, tr.y + tr.height / 2, 10, 10, Colors.red, angle=90).draw(self)
 
 
     def draw_one(self, obj, camera: Camera):
