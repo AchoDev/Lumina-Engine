@@ -84,6 +84,9 @@ class Scene:
         return WIN.get_ratio()
     
     def mouse_to_window(self):
+        return self.camera.window_to_window_position(Input.get_mouse_pos())
+
+    def mouse_to_world(self):
         return self.camera.window_to_world_position(Input.get_mouse_pos())
 
     def load(self):
@@ -91,11 +94,12 @@ class Scene:
         WIN.current_scene = self
 
         if(self.__previous_mouse_pos != None):
-            current_mouse = Input.get_mouse_pos()
-            self.camera.transform.position -= (current_mouse - self.__previous_mouse_pos) * (self.camera.orthographic_size / self.camera.transform.width)
+            current_mouse = self.mouse_to_window()
+            self.camera.transform.position = self.__previous_mouse_pos - current_mouse
 
         if(Input.get_mouse()[2]):
-            self.__previous_mouse_pos = Input.get_mouse_pos()
+            if(self.__previous_mouse_pos == None):
+                self.__previous_mouse_pos = self.mouse_to_world()
         else:
             self.__previous_mouse_pos = None
 
