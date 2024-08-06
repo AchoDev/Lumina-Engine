@@ -10,13 +10,13 @@ class Triangle(GameObject):
         self.angle = angle
 
     def get_points(self):
-        return [(self.transform.x, self.transform.y + self.transform.height), 
+        return self.rotate_points_around_pivot([(self.transform.x, self.transform.y + self.transform.height), 
                 (self.transform.x + self.transform.width, self.transform.y + self.transform.height), 
-                (self.transform.x + self.transform.width / 2, self.transform.y)]
+                (self.transform.x + self.transform.width / 2, self.transform.y)], self.angle)
 
     def draw(self, window):
         super().draw(window)
-        pygame.draw.polygon(window.win, self.color, self.rotate_points_around_pivot(self.get_points(), self.angle))
+        window.draw_triangle(self)
 
     def rotate_points_around_pivot(self, points, angle):
         pivot = (self.transform.x + self.transform.width / 2, self.transform.y + self.transform.height / 2)

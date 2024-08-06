@@ -169,11 +169,7 @@ class Window:
         self.current_camera = camera
         window_ratio.change(self.height / (self.current_camera.orthographic_size * 2))
         
-        ratio = None
-        if(not self.editor_view):
-            ratio = window_ratio.value # l + ratio
-        else:
-            ratio = window_ratio.value * ((self._height - self.__editor_y) / self.height)
+        ratio = window_ratio.value # l + ratio
 
         if type(obj).__name__ == "Text":
             original_font_size = obj.font_size
@@ -195,13 +191,6 @@ class Window:
 
         obj_tf.width *= ratio
         obj_tf.height *= ratio
-
-        if(self.editor_view):
-            obj_tf.x += self.__editor_x
-            obj_tf.y += self.__editor_y
-
-            obj_tf.width *= self.width / self._width
-            obj_tf.height *= self.height / self._height
 
         
         obj.draw(self)
@@ -230,30 +219,27 @@ class Window:
         pass
 
     def __editor_view_transform(self, tr):
-        # new_tr = Transform.from_transform(tr)
-        new_tr = copy.copy(tr)
+        new_tr = Transform.from_transform(tr)
         
         if(self.editor_view):
+            ratio = (self.height - self.__editor_y) / self.height
 
-            # xRatio = self._width / self.width
-            # yRatio = self._height / self.height
-
-            # new_tr.x *= xRatio
-            # new_tr.y *= yRatio
+            new_tr.x *= ratio
+            new_tr.y *= ratio
 
             new_tr.x += self.__editor_x
-            new_tr.y -= self.__editor_y
+            # new_tr.y -= self.__editor_y
+
             
-            # new_tr.width *= xRatio
-            # new_tr.height *= yRatio
+            new_tr.width *= ratio
+            new_tr.height *= ratio
 
 
         return new_tr
 
     def draw_rect(self, obj, color, alpha=255):
         
-        # t = self.__editor_view_transform(obj.transform)
-        t = obj.transform
+        t = self.__editor_view_transform(obj.transform)
 
         if alpha == 255 and t.angle == 0:
             rect = pygame.Rect(t.x, t.y, t.width, t.height)
@@ -266,9 +252,18 @@ class Window:
                     
             self.win.blit(s, t.get_position().to_tuple())
 
+    def draw_triangle(self, obj: Triangle):
+        t = self.__editor_view_transform(obj.transform)
+        points = obj.get_points()
+        draw_points = []
+        for point in points:
+            draw_points.append((point[0] * window_ratio.value, point[1] * window_ratio.value))
+        pygame.draw.polygon(self.win, obj.color, draw_points)
+
+
     def draw_transparent_square(self, obj, color, alpha):
 
-        # tr = self.__editor_view_transform(Transform(obj.x, obj.y, obj.width, obj.height))
+        tr = self.__editor_view_transform(Transform(obj.x, obj.y, obj.width, obj.height))
         tr = Transform(obj.x, obj.y, obj.width, obj.height)
         s = pygame.Surface(tr.get_size().to_tuple(), pygame.SRCALPHA)
         s.set_alpha(alpha)
@@ -278,7 +273,7 @@ class Window:
     def draw_text(self, text, color, pos, font_size, font, bold=False):
         font = pygame.font.SysFont(font, font_size, bold)
 
-        # tr = self.__editor_view_transform(Transform.from_position(pos))
+        tr = self.__editor_view_transform(Transform.from_position(pos))
         tr = Transform.from_position(pos)
 
         self.win.blit(font.render(text, 1, color), tr.get_position().to_tuple())
@@ -302,7 +297,7 @@ class Window:
         self.current_camera.transform.width = self.width
         self.current_camera.transform.height = self.height
 
-        # window_ratio.change(self.width / self.current_camera.transform.width / self.current_camera.orthographic_size)
+        window_ratio.change(self.width / self.current_camera.transform.width / self.current_camera.orthographic_size)
 
     def set_attr(self, scale, canvas):
         self.width = scale[0]
