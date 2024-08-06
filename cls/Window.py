@@ -143,6 +143,9 @@ class Window:
             self.draw_one(object, camera)
 
     def draw_obj_handles(self, tr: Transform):
+
+        if(not self.editor_view): return
+
         nav_tf = Transform.from_transform(tr)
         
         nav_tf.width = 4
