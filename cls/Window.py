@@ -98,7 +98,7 @@ class Window:
 
     @property
     def width(self):
-        if(self.editor_view): return self._width - self.__editor_x
+        # if(self.editor_view): return self._width - self.__editor_x
 
         return self._width
     
@@ -108,7 +108,7 @@ class Window:
 
     @property
     def height(self):
-        if(self.editor_view): return self._height - self.__editor_y
+        # if(self.editor_view): return self._height - self.__editor_y
 
         return self._height
     
@@ -169,9 +169,12 @@ class Window:
         self.current_camera = camera
         window_ratio.change(self.height / (self.current_camera.orthographic_size * 2))
         
+        ratio = None
+        if(not self.editor_view):
+            ratio = window_ratio.value # l + ratio
+        else:
+            ratio = window_ratio.value * ((self._height - self.__editor_y) / self.height)
 
-        ratio = window_ratio.value # l + ratio
-        
         if type(obj).__name__ == "Text":
             original_font_size = obj.font_size
             obj.font_size = int(obj.font_size * ratio)             
@@ -184,7 +187,6 @@ class Window:
         obj_tf.x -= self.current_camera.transform.x - (self.width / ratio) / 2
         obj_tf.y -= self.current_camera.transform.y - (self.height / ratio) / 2
 
-
         obj_tf.x -= obj_tf.width / 2
         obj_tf.y -= obj_tf.height / 2
 # 
@@ -193,6 +195,14 @@ class Window:
 
         obj_tf.width *= ratio
         obj_tf.height *= ratio
+
+        if(self.editor_view):
+            obj_tf.x += self.__editor_x
+            obj_tf.y += self.__editor_y
+
+            obj_tf.width *= self.width / self._width
+            obj_tf.height *= self.height / self._height
+
         
         obj.draw(self)
 
@@ -220,7 +230,8 @@ class Window:
         pass
 
     def __editor_view_transform(self, tr):
-        new_tr = Transform.from_transform(tr)
+        # new_tr = Transform.from_transform(tr)
+        new_tr = copy.copy(tr)
         
         if(self.editor_view):
 
@@ -241,7 +252,8 @@ class Window:
 
     def draw_rect(self, obj, color, alpha=255):
         
-        t = self.__editor_view_transform(obj.transform)
+        # t = self.__editor_view_transform(obj.transform)
+        t = obj.transform
 
         if alpha == 255 and t.angle == 0:
             rect = pygame.Rect(t.x, t.y, t.width, t.height)
@@ -256,7 +268,8 @@ class Window:
 
     def draw_transparent_square(self, obj, color, alpha):
 
-        tr = self.__editor_view_transform(Transform(obj.x, obj.y, obj.width, obj.height))
+        # tr = self.__editor_view_transform(Transform(obj.x, obj.y, obj.width, obj.height))
+        tr = Transform(obj.x, obj.y, obj.width, obj.height)
         s = pygame.Surface(tr.get_size().to_tuple(), pygame.SRCALPHA)
         s.set_alpha(alpha)
         s.fill(color)
@@ -265,7 +278,8 @@ class Window:
     def draw_text(self, text, color, pos, font_size, font, bold=False):
         font = pygame.font.SysFont(font, font_size, bold)
 
-        tr = self.__editor_view_transform(Transform.from_position(pos))
+        # tr = self.__editor_view_transform(Transform.from_position(pos))
+        tr = Transform.from_position(pos)
 
         self.win.blit(font.render(text, 1, color), tr.get_position().to_tuple())
 
