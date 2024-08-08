@@ -139,6 +139,7 @@ class Window:
 
     def draw_many(self, objects, camera):
         for object in objects:
+            if(not object.active): continue
             # self.win.blit(object.get_body(), (object.x, object.y))
             self.draw_one(object, camera)
 
@@ -179,7 +180,7 @@ class Window:
             obj.font_size = int(obj.font_size * ratio)             
         
         obj.update()
-        obj_tf = obj.transform
+        obj_tf = Transform.from_transform(obj.transform)
 
         ot = Transform.from_transform(obj.transform) # ot -> original transform
 

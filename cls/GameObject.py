@@ -12,6 +12,7 @@ class GameObject:
     def __init__(self, xPos=0, yPos=0, width = 1, height = 1):
         self.__animation = None
 
+        self.active = True
         self.name = 'GameObject'
         self.children = []
         self.components = []

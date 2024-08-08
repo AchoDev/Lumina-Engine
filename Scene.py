@@ -111,8 +111,9 @@ class Scene:
             self.debug_window.update()
 
         for object in self.objects:
-            object.refresh_components(self)
-            object.update()
+            if object.active:
+                object.refresh_components(self)
+                object.update()
 
 
         WIN.fill(self.background_color)

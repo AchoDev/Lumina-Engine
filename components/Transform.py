@@ -39,6 +39,7 @@ class Transform(Component):
             self._x = xPos
             return
         
+        print(self.b2Body.position)
         self.b2Body.position.Set(xPos, self.b2Body.position.y)
 
         

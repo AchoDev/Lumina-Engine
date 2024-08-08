@@ -8,3 +8,6 @@ class Container:
 
     def add_number(self, value):
         self.value += value
+
+    def toggle(self):
+        self.value = not self.value
