@@ -4,18 +4,19 @@ import sys
 
 import delta_time
 
-from Box2D import b2Fixture, b2Body
+from Box2D import b2Fixture, b2Body, b2_staticBody, b2_dynamicBody
 
 sys.path.append("..")
 
 from editor_view import *
 
 class Rigidbody(Component):
-    def __init__(self):
+    def __init__(self, static=False):
         super().__init__()
         self._density = 10
         self.fixture: b2Fixture = None
         self.body: b2Body = None 
+        self.static = static
 
 
     def initialize(self):
@@ -23,7 +24,8 @@ class Rigidbody(Component):
         self.body = self.target.b2Body
         self.fixture.density = self._density
 
-        self.body.type = 2
+        self.body.type = b2_dynamicBody
+        
 
         self.body.active = True
         del self._density

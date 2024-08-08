@@ -8,15 +8,15 @@ scene = Scene("t")
 scene.fill(light_blue)
 
 b = scene.add_object(Square(1, 0, 1, 1, green))
-# b.add_component(Rigidbody())
+b.add_component(Rigidbody(static=True))
 b.add_component(Boxcollider())
 
 # b2 = scene.add_object(Square(0, 1, 1, 1, red))
 # b2.add_component(Rigidbody())
 # b2.add_component(Boxcollider())
 
-# b3 = scene.add_object(Square(0, 3, 10, 1, violet))
-# b3.add_component(Boxcollider())
+b3 = scene.add_object(Square(0, 3, 10, 1, violet))
+b3.add_component(Boxcollider())
 
 # debug_cube = scene.add_object(Square(0, 0, 1, 1, orchid))
 # debug_cube.name = 'DEBUG CUBE'
@@ -46,7 +46,7 @@ while True:
     if show_box.value:
         b.active = True
         if move_box.value:
-            b.transform.set_position(mouse_pos)
+            b.get_component("Rigidbody").move_position(mouse_pos)
     else:
         b.active = False
 

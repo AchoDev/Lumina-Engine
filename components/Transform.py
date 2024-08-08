@@ -38,8 +38,6 @@ class Transform(Component):
         if(self.b2Body == None):
             self._x = xPos
             return
-        
-        print(self.b2Body.position)
         self.b2Body.position.Set(xPos, self.b2Body.position.y)
 
         

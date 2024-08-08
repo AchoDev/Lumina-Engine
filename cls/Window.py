@@ -179,8 +179,7 @@ class Window:
             original_font_size = obj.font_size
             obj.font_size = int(obj.font_size * ratio)             
         
-        obj.update()
-        obj_tf = Transform.from_transform(obj.transform)
+        obj_tf = obj.transform
 
         ot = Transform.from_transform(obj.transform) # ot -> original transform
 
