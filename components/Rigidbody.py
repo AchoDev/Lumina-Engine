@@ -4,7 +4,7 @@ import sys
 
 import delta_time
 
-from Box2D import b2Fixture, b2Body, b2_staticBody, b2_dynamicBody
+from Box2D import b2Fixture, b2Body, b2_staticBody, b2_dynamicBody, b2_kinematicBody
 
 sys.path.append("..")
 
@@ -24,8 +24,7 @@ class Rigidbody(Component):
         self.body = self.target.b2Body
         self.fixture.density = self._density
 
-        self.body.type = b2_dynamicBody
-        
+        self.body.type = b2_dynamicBody if not self.static else b2_kinematicBody
 
         self.body.active = True
         del self._density
@@ -82,9 +81,12 @@ class Rigidbody(Component):
         if(self.body == None): return
         tr = self.target.transform
         fps = delta_time.get_fps()
-        self.body.linearVelocity.Set((position.x - tr.x) * fps, (position.y - tr.y) * fps)
-        self.body.position.Set(position.x, position.y)
-
+        self.body.linearVelocity = ((position.x - tr.x) * fps, (position.y - tr.y) * fps)
+        
+    def smooth_move_to(self, position, speed=5):
+        if(self.body == None): return
+        tr = self.target.transform
+        self.body.linearVelocity = ((position.x - tr.x) * speed, (position.y - tr.y) * speed)
 
     def add_force(self, force):
         self.xVel += force / self.mass

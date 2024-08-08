@@ -7,7 +7,7 @@ init(window_dim)
 scene = Scene("t")
 scene.fill(light_blue)
 
-b = scene.add_object(Square(1, 0, 1, 1, green))
+b = scene.add_object(Square(1, 0, 4, 1, green))
 b.add_component(Rigidbody(static=True))
 b.add_component(Boxcollider())
 
@@ -39,14 +39,15 @@ while True:
     mouse_pos = scene.camera.window_to_world_position(get_mouse_pos())
 
     if(get_key('a')):
-        new = scene.add_object(Square(mouse_pos.x, mouse_pos.y, 0.5, 0.5, white))
+        new = scene.add_object(Square(mouse_pos.x, mouse_pos.y + 3, 0.5, 0.5, white))
         new.add_component(Rigidbody())
         new.add_component(Boxcollider())
 
     if show_box.value:
         b.active = True
         if move_box.value:
-            b.get_component("Rigidbody").move_position(mouse_pos)
+            b.get_component("Rigidbody").smooth_move_to(mouse_pos, 10)
+            # b.transform.set_position(mouse_pos)
     else:
         b.active = False
 
