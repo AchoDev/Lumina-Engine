@@ -1,3 +1,5 @@
+
+
 class Vector2:
     def __init__(self, x=0, y=0):
         self.x = x
@@ -8,6 +10,10 @@ class Vector2:
 
     def to_tuple(self):
         return (self.x, self.y)
+
+    def to_transform(self):
+        from .Transform import Transform
+        return Transform(self.x, self.y, self.x, self.y)
 
     def reset(self):
         self.x, self.y = 0

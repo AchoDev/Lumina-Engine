@@ -3,7 +3,7 @@ import sys, copy
 sys.path.append("..")
 from components.Transform import Transform
 from components.Component import Component
-from Scene import Scene
+# from Scene import Scene
 
 
 from Box2D import b2PolygonShape, b2Body

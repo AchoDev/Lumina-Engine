@@ -12,4 +12,4 @@ class Canvas(GameObject):
         self.x = cam_tr.x
         self.y = cam_tr.y
         self.height = self.scene.camera.orthographic_size * 2
-        self.width = self.scene.camera.orthographic_size * 2 * (self.scene.camera.width / self.scene.camera.height)
+        self.width = self.scene.camera.orthographic_size * 2 * (self.scene.camera.transform.width / self.scene.camera.transform.height)

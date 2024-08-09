@@ -81,6 +81,7 @@ class Scene:
             
 
     def get_window_ratio(self):
+        from main import WIN
         return WIN.get_ratio()
     
     def mouse_to_window(self):
@@ -90,7 +91,7 @@ class Scene:
         return self.camera.window_to_world_position(Input.get_mouse_pos())
 
     def load(self):
-
+        from main import WIN
         WIN.current_scene = self
 
         if(self.__previous_mouse_pos != None):
@@ -134,6 +135,7 @@ class Scene:
         pass
 
     def update_dimensions(self):
+        from main import WIN
         self.window_dimensions.change((WIN.width, WIN.height))
 
     def add_event(self, event):
