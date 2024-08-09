@@ -80,7 +80,7 @@ def set_hand_positions(objects):
     return objects
 
 def check_collision_point(object, point):
-    if Window.get_rect(object).collidepoint(point): return True
+    if Window.get_rect(object, adjust=True).collidepoint(point): return True
     return False
 
 def check_collision(object_1, object_2):

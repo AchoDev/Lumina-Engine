@@ -18,6 +18,9 @@ class Vector2:
     def reset(self):
         self.x, self.y = 0
 
+    def rounded(self):
+        return self.copy_with(round(self.x, 2), round(self.y, 2))
+
     def copy_with(self, x=None, y=None):
         return Vector2(
             self.x if x == None else x,

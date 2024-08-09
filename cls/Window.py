@@ -277,7 +277,9 @@ class Window:
     def draw_line(self, obj, color):
         pygame.draw.line(self.win, color, (obj.x1, obj.y1), (obj.x2, obj.y2), 1)
 
-    def get_rect(self, object):
+    def get_rect(self, object, adjust=False):
+        if adjust:
+            return pygame.Rect(object.x - object.width / 2, object.y - object.height / 2, object.width, object.height)
         return pygame.Rect(object.x, object.y, object.width, object.height)
 
     def fill(self, color):
@@ -316,8 +318,10 @@ class Window:
         return (tup[0] * window_ratio.value, tup[1] * window_ratio.value)
 
     @staticmethod
-    def get_rect(object):
+    def get_rect(object, adjust=False):
         tr = object.transform
+        if adjust:
+            return pygame.Rect(tr.x - tr.width / 2, tr.y - tr.height / 2, tr.width, tr.height)
         return pygame.Rect(tr.x, tr.y, tr.width, tr.height)
     
     def __set_editor_selected_object(self, obj):
