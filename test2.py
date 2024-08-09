@@ -31,6 +31,8 @@ bucket3 = scene.add_object(Square(0, 1, 1, 4, blue_violet))
 bucket3.add_component(Rigidbody(static=True))
 bucket3.add_component(Boxcollider())
 
+canvas = scene.add_object(Canvas())
+platform_indicator = canvas.add_child(Text(0, 0, 'Platform', 20, white))
 
 # debug_cube = scene.add_object(Square(0, 0, 1, 1, orchid))
 # debug_cube.name = 'DEBUG CUBE'
@@ -61,29 +63,25 @@ while True:
         new.add_component(Rigidbody())
         new.add_component(Boxcollider())
 
-    b.active = False
-    b2.active = False
-
-    bucket1.active = False
-    bucket2.active = False
-    bucket3.active = False
 
     speed = 30
+
+    b.get_component("Rigidbody").velocity = Vector2(0, 0)
+    b2.get_component("Rigidbody").velocity = Vector2(0, 0)
+    bucket1.get_component("Rigidbody").velocity = Vector2(0, 0)
+    bucket2.get_component("Rigidbody").velocity = Vector2(0, 0)
+    bucket3.get_component("Rigidbody").velocity = Vector2(0, 0)
+
 
     match current_box.value:
         case BoxType.PLATFORM:
             b.get_component("Rigidbody").smooth_move_to(mouse_pos, speed)
-            b.active = True
         case BoxType.WALL:
             b2.get_component("Rigidbody").smooth_move_to(mouse_pos, speed)
-            b2.active = True
         case BoxType.BUCKET:
             bucket1.get_component("Rigidbody").smooth_move_to(mouse_pos, speed)
             bucket2.get_component("Rigidbody").smooth_move_to(mouse_pos + Vector2(2, - 2), speed)
             bucket3.get_component("Rigidbody").smooth_move_to(mouse_pos + Vector2(-2, - 2), speed)
-            bucket1.active = True
-            bucket2.active = True
-            bucket3.active = True
 
 
     # debug_cube.transform.set_position(mouse_pos)

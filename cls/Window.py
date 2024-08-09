@@ -61,21 +61,14 @@ class Window:
             ECenter(
                 EText('Lumina Editor-View', 20),
             ),
-            EDivider(),
-            ECenter(
-                EHorizontalList([
-                    EText('View ', text_size),
-                    EButton('Game', button_width, button_height),
-                    EButton('Editor', button_width, button_height),
-                ], 20),
-            ),
-            ECenter(
-                EHorizontalList([
-                    EText('Mode ', text_size),
-                    EButton('Static', button_width, button_height),
-                    EButton('Free', button_width, button_height),
-                ], 20),
-            ),
+            # EDivider(),
+            # ECenter(
+            #     EHorizontalList([
+            #         EText('View ', text_size),
+            #         EButton('Game', button_width, button_height),
+            #         EButton('Editor', button_width, button_height),
+            #     ], 20),
+            # ),
 
             EDivider(),
 

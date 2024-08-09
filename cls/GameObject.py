@@ -3,7 +3,7 @@ import sys, copy
 sys.path.append("..")
 from components.Transform import Transform
 from components.Component import Component
-
+from Scene import Scene
 
 
 from Box2D import b2PolygonShape, b2Body
@@ -18,6 +18,7 @@ class GameObject:
         self.components = []
         self.b2Body: b2Body = None
         self.transform: Transform = self.add_component(Transform(xPos, yPos, width, height))
+        self.scene: Scene = None
 
     def initialize(self, scene):
         self.b2Body = scene.physics_world.CreateDynamicBody(
@@ -27,6 +28,8 @@ class GameObject:
         self.b2Body.type = 0
         self.b2Body.fixtures[0].filterData.categoryBits = 0x0000
         self.b2Body.fixtures[0].filterData.maskBits = 0x0000
+
+        self.scene = scene
 
         self.transform.set_target(self)
 

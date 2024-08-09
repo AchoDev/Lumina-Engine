@@ -1,6 +1,6 @@
 
 from cls import *
-from main import WIN
+
 from components.Transform import Transform
 import asyncio, delta_time
 
@@ -41,6 +41,8 @@ def watch(variable, name='var'):
 watch(lambda: round(delta_time.get_average_fps(), 2), 'fps')
 
 def draw_console():
+
+    from main import WIN
 
     if is_visible:
         __ct.x = WIN.width - console_size[0]

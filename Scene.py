@@ -1,4 +1,4 @@
-from main import WIN
+
 from Eventloop import Eventloop
 from cls.functions import *
 from cls import GameObject, Container, Square, Text, Colors, Camera
@@ -10,11 +10,7 @@ from components.Transform import Transform
 
 import Input
 
-import delta_time
-
 from Box2D import *
-
-import pygame
 
 # class Debug_Variable:
 #     def __init__(self, contianer):
@@ -58,8 +54,12 @@ import pygame
 #             text_object.transform.y = (i + 1) * box_height
 #             self.add_child(text_object)
 
+# WIN = None
+
 class Scene:
     def __init__(self, name, objects=[]):
+
+        from main import WIN
 
         self.name = name
         self.objects = objects

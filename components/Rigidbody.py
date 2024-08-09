@@ -62,6 +62,10 @@ class Rigidbody(Component):
         vel = self.b2box.linearVelocity
         return Vector2(vel.x, vel.y)
 
+    @velocity.setter
+    def velocity(self, velocity: Vector2):
+        self.body.linearVelocity = velocity.to_tuple()
+
     @property
     def density(self):
         return self.fixture.density
