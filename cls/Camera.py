@@ -19,7 +19,7 @@ class Camera(GameObject):
         pixel_per_meter = self.transform.height / (self.orthographic_size * 2)
 
         winPosX = (pos.x / pixel_per_meter + self.transform.x) - (self.transform.width / pixel_per_meter) / 2
-        winPoxY = (pos.y / pixel_per_meter + self.transform.y) - (self.transform.height / pixel_per_meter) / 2
+        winPoxY = ((self.transform.height - pos.y) / pixel_per_meter + self.transform.y) - (self.transform.height / pixel_per_meter) / 2
 
         return Vector2(winPosX, winPoxY)
     
@@ -28,6 +28,6 @@ class Camera(GameObject):
         pixel_per_meter = self.transform.height / (self.orthographic_size * 2)
 
         winPosX = (pos.x / pixel_per_meter) - (self.transform.width / pixel_per_meter) / 2
-        winPoxY = (pos.y / pixel_per_meter) - (self.transform.height / pixel_per_meter) / 2
+        winPoxY = ((self.transform.height - pos.y) / pixel_per_meter) - (self.transform.height / pixel_per_meter) / 2
 
         return Vector2(winPosX, winPoxY)

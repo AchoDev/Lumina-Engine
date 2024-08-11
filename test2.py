@@ -49,7 +49,8 @@ b3.add_component(Boxcollider())
 canvas = scene.add_object(Canvas())
 
 console.watch(lambda: b.transform.position.rounded(), "b pos")
-console.watch(lambda: scene.mouse_to_world().rounded(), "mtw")
+console.watch(lambda: scene.mouse_to_window().rounded(), "mtw")
+console.watch(lambda: scene.camera.transform.position.rounded(), "cam pos")
 
 while True:
     mouse_pos = scene.camera.window_to_world_position(get_mouse_pos())

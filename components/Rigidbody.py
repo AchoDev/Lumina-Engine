@@ -4,6 +4,8 @@ import sys
 
 import delta_time
 
+sys.path.append('..')
+
 from Box2D import b2Fixture, b2Body, b2_staticBody, b2_dynamicBody, b2_kinematicBody
 
 sys.path.append("..")
