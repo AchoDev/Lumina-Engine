@@ -43,7 +43,7 @@ class GameObject:
         self.__animation = animation
 
     def get_transform(self):
-        return self.get_component("Transform")
+        return self.get_component(Transform)
 
     def draw(self, screen):
         for child in self.children:
@@ -59,9 +59,9 @@ class GameObject:
         component.initialize()
         return component
 
-    def get_component(self, name:str):
+    def get_component(self, component_type):
         for component in self.components:
-            if component.__class__.__name__ == name: return component
+            if isinstance(component, component_type): return component
 
         return None
 

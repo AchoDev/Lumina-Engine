@@ -14,7 +14,7 @@ class DragAround(Component):
         self.dragging = False
     
     def initialize(self):
-        self.rb: Rigidbody = self.target.get_component("Rigidbody")   
+        self.rb: Rigidbody = self.target.get_component(Rigidbody)   
     
     def update(self, scene):
         if not get_mouse()[0]: 

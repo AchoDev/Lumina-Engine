@@ -59,15 +59,15 @@ main_menu.add_event(KeyEvent(pygame.K_RIGHT, lambda: turn(1)))
 
 def reset_pos():
     sqr.set_y(0)
-    sqr.get_component("Rigidbody").yVel = 0
+    sqr.get_component(Rigidbody).yVel = 0
     console.log("POSITION RESET")
 
-add_force_event = KeyEvent(pygame.K_c, lambda: sqr.get_component("Rigidbody").add_force(500))
+add_force_event = KeyEvent(pygame.K_c, lambda: sqr.get_component(Rigidbody).add_force(500))
 reset_event = KeyEvent(pygame.K_x, reset_pos)
 
 main_menu.add_many_events([add_force_event, reset_event])
 
-rb = sqr.get_component("Rigidbody")
+rb = sqr.get_component(Rigidbody)
 
 fps = Container(0)
 
