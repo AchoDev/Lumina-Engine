@@ -109,8 +109,9 @@ class Scene:
             print((self.mouse_to_window() / 4) * Input.get_mouse_scroll())
         
         self.camera.orthographic_size -= Input.get_mouse_scroll() * (self.camera.orthographic_size / 5)
-        self.camera.transform.position += (self.mouse_to_window() / 4) * Input.get_mouse_scroll()
-
+        new_pos = (self.mouse_to_window() / 4) * Input.get_mouse_scroll()
+        self.camera.transform.position.x += new_pos.x
+        self.camera.transform.position.y += new_pos.y
 
         
         if self.debug_mode:

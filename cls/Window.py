@@ -170,14 +170,14 @@ class Window:
 
         if type(obj).__name__ == "Text":
             original_font_size = obj.font_size
-            obj.font_size = int(obj.font_size * ratio)             
+            obj.font_size = int(obj.font_size * ratio)       
         
         obj_tf = obj.transform
 
         ot = Transform.from_transform(obj.transform) # ot -> original transform
 
         obj_tf.x -= self.current_camera.transform.x - (self.width / ratio) / 2
-        obj_tf.y += self.current_camera.transform.y - (self.height / ratio) / 2
+        obj_tf.y += self.current_camera.transform.y + (self.height / ratio) / 2
 
         obj_tf.x -= obj_tf.width / 2
         obj_tf.y -= obj_tf.height / 2
@@ -302,7 +302,7 @@ class Window:
         self.height = scale[1]
         self.canvas_size = canvas
 
-        self.win = pygame.display.set_mode(scale, pygame.RESIZABLE, 0, display=1)
+        self.win = pygame.display.set_mode(scale, pygame.RESIZABLE, 0, display=0)
         pygame.display.set_caption('Lumina-Engine window')
 
 
