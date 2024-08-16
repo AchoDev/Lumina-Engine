@@ -5,6 +5,8 @@ from components.Transform import Transform
 from components.Component import Component
 # from Scene import Scene
 
+import pygame
+
 
 from Box2D import b2PolygonShape, b2Body
 
@@ -20,7 +22,10 @@ class GameObject:
         self.transform: Transform = self.add_component(Transform(xPos, yPos, width, height))
         self.scene: Scene = None
 
-        self.serialized_values = {}
+        self.selected: bool = False
+        self.hovered: bool = False
+
+        # self.serialized_values = {}
 
     def initialize(self, scene):
         self.b2Body = scene.physics_world.CreateDynamicBody(
@@ -113,7 +118,20 @@ class GameObject:
         else:
             return False
 
-    def update(self):
+    def check_click(self, window, mouse_pos):        
+        if window.get_rect(self).collidepoint(mouse_pos.to_tuple()):
+            if pygame.mouse.get_pressed()[0] == 1 and not self.hovered:
+                return
+            self.hovered = True
+        else:
+            self.hovered = False
+
+        if pygame.mouse.get_pressed()[0] and self.hovered:
+            self.selected = True
+            
+            
+
+    def update(self):        
         pass
 
     @classmethod

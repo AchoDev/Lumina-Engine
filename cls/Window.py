@@ -167,11 +167,17 @@ class Window:
 
 
     def draw_one(self, obj, camera: Camera):
+
+        if pygame.mouse.get_pressed()[0]:
+            obj.selected = False
+
+        obj.check_click(self, self.__current_scene.mouse_to_world())
+        
         if(obj == camera): return
 
         self.current_camera = camera
         window_ratio.change(self.height / (self.current_camera.orthographic_size * 2))
-        
+
         ratio = window_ratio.value # l + ratio
 
         if type(obj).__name__ == "Text":
@@ -199,7 +205,8 @@ class Window:
         
         obj.draw(self)
 
-        self.draw_obj_handles(obj_tf)
+        if(obj.selected):
+            self.draw_obj_handles(obj_tf)
 
         obj.transform.set(ot)
 
