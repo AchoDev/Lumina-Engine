@@ -49,6 +49,8 @@ class Window:
         self.__object_viewer = EObjectViewer()
         self.__inspector = EInspector()
 
+        self.fonts = {}
+
         button_width = 65
         button_height = 25
         text_size = 17
@@ -269,7 +271,17 @@ class Window:
         self.win.blit(s, tr.get_position().to_tuple())
 
     def draw_text(self, text, color, pos, font_size, font, bold=False):
-        font = pygame.font.SysFont(font, font_size, bold)
+        # font = pygame.font.SysFont(font, font_size, bold)
+
+    
+        if(font not in self.fonts):
+            self.fonts[font] = {}
+
+        if(font_size not in self.fonts[font]):
+            self.fonts[font][font_size] = pygame.font.SysFont(font, font_size)
+
+
+        font = self.fonts[font][font_size]
 
         tr = self.__editor_view_transform(Transform.from_position(pos))
         tr = Transform.from_position(pos)

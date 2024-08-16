@@ -17,14 +17,15 @@ class Text(GameObject):
         # self.width = 1920
 
         # self.__set_size()
+        self.font = pygame.font.SysFont('ebrima', self.font_size)
         
     def __set_size(self):
         self.width = self.__get_body().get_width()
         self.height = self.__get_body().get_height()
 
-    def __get_body(self):
 
-        self.font = pygame.font.SysFont('ebrima', self.font_size)
+
+    def __get_body(self):
         return self.font.render(self.text, 1, self.color)
 
     def draw(self, window):

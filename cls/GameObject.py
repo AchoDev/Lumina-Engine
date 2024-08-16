@@ -20,6 +20,8 @@ class GameObject:
         self.transform: Transform = self.add_component(Transform(xPos, yPos, width, height))
         self.scene: Scene = None
 
+        self.serialized_values = {}
+
     def initialize(self, scene):
         self.b2Body = scene.physics_world.CreateDynamicBody(
             position=(self.transform.x, self.transform.y),
@@ -64,6 +66,9 @@ class GameObject:
             if isinstance(component, component_type): return component
 
         return None
+
+    # def serialize(self, ):
+
 
     def refresh_components(self, scene):
         for component in self.components:

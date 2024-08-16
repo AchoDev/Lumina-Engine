@@ -13,6 +13,8 @@ class EButton(EditorComponent):
         self.clicked = False
         self.hovered = False
 
+        self.font = pygame.font.SysFont('lucidasanstypewriter', 15)
+
     def get_width(self):
         return self.width
     
@@ -41,10 +43,10 @@ class EButton(EditorComponent):
         
         pygame.draw.rect(back, self.white, (0, 0, self.width, self.height), border_radius=2)
 
-        font = pygame.font.SysFont('lucidasanstypewriter', 15)
-        text_size = font.size(self.text)
+        
+        text_size = self.font.size(self.text)
 
-        back.blit(font.render(self.text, 1, black), (self.width / 2 - text_size[0] / 2, self.height / 2 - text_size[1] / 2))
+        back.blit(self.font.render(self.text, 1, black), (self.width / 2 - text_size[0] / 2, self.height / 2 - text_size[1] / 2))
 
         return back
     
