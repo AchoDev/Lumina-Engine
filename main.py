@@ -7,11 +7,14 @@ WIN = Window.empty_window()
 pygame.init()
 FPS = 60
 
-def init(window_dimensions, canvas_size=None):
+def init(window_dimensions, fullscreen=False):
 
-    if not canvas_size: canvas_size = window_dimensions
+    # if not canvas_size: canvas_size = window_dimensions
 
-    WIN.set_attr(window_dimensions, canvas_size)
+    WIN.set_attr(window_dimensions, window_dimensions)
+
+    if fullscreen:
+        WIN.set_fullscreen()
 
     clock = pygame.time.Clock()
 

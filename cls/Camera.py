@@ -10,8 +10,6 @@ class Camera(GameObject):
         self.name = 'Camera'
         self.window_position: Vector2 = Vector2(0, 0)
         
-
-
     def change_ortho(self, value):
         self.orthographic_size = value
 

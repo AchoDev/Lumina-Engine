@@ -2,7 +2,7 @@ from typing import Any
 from __init__ import *
 from enum import Enum
 
-window_dim = (1000, 600)
+window_dim = (1600, 900)
 init(window_dim)
 
 scene = Scene("t")
@@ -50,10 +50,12 @@ debug_cube = scene.add_object(Square(0, 0, 0.5, 0.5, black))
 
 canvas = scene.add_object(Canvas())
 
-console.watch(lambda: b.transform.position.rounded(), "b pos")
-console.watch(lambda: scene.mouse_to_window().rounded(), "mtw")
-console.watch(lambda: scene.mouse_to_world().rounded(), "mtworld")
-console.watch(lambda: scene.camera.transform.position.rounded(), "cam pos")
+# console.watch(lambda: b.transform.position.rounded(), "b pos")
+# console.watch(lambda: scene.mouse_to_window().rounded(), "mtw")
+# console.watch(lambda: scene.mouse_to_world().rounded(), "mtworld")
+# console.watch(lambda: scene.camera.transform.position.rounded(), "cam pos")
+
+console.watch(lambda: get_mouse_pos().rounded(), "mouse pos")
 
 while True:
 

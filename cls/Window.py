@@ -119,16 +119,20 @@ class Window:
         # else:
         #     pygame.display.set_caption('Lumina-Engine window')
 
+    def set_fullscreen(self):
+        max_res = pygame.display.list_modes()[0]
+        self.win = pygame.display.set_mode(max_res, pygame.FULLSCREEN, 32)
 
     def validate_absolute_position(self, pos):
         x_res = pos[0]
         y_res = pos[1]
         if(self.editor_view):
-            # x_res /= self.width / self._width
-            # y_res /= self.height / self._height
-
+            ratio = self.height / (self.height - self.__editor_y)
+            
             x_res -= self.__editor_x
-            y_res -= self.__editor_y
+
+            x_res *= ratio
+            y_res *= ratio
             
         return (x_res, y_res)
 
