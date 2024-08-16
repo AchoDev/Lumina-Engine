@@ -66,7 +66,7 @@ class Rigidbody(Component):
 
     @velocity.setter
     def velocity(self, velocity: Vector2):
-        self.body.linearVelocity = velocity.to_tuple()
+        self.body.linearVelocity = velocity.flip_y().to_tuple()
 
     @property
     def density(self):
@@ -92,7 +92,8 @@ class Rigidbody(Component):
     def smooth_move_to(self, position, speed=5):
         if(self.body == None): return
         tr = self.target.transform
-        self.body.linearVelocity = ((position.x - tr.x) * speed, (position.y - tr.y) * speed)
+        self.velocity = Vector2((position.x - tr.x) * speed, (position.y - tr.y) * speed)
+        print(position.y, tr.y)
 
     def add_force(self, force):
         self.xVel += force / self.mass

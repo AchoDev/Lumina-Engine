@@ -27,6 +27,12 @@ class Vector2:
             self.y if y == None else y
         )
 
+    def flip_y(self):
+        return Vector2(self.x, -self.y)
+    
+    def flip_x(self):
+        return Vector2(-self.x, self.y)
+
     def __repr__(self) -> str:
         return f'Vector2({self.x}, {self.y})'
 

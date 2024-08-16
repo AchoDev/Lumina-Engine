@@ -104,9 +104,6 @@ class Scene:
                 self.__previous_mouse_pos = self.mouse_to_world()
         else:
             self.__previous_mouse_pos = None
-
-        if Input.get_mouse_scroll() != 0:
-            print((self.mouse_to_window() / 4) * Input.get_mouse_scroll())
         
         self.camera.orthographic_size -= Input.get_mouse_scroll() * (self.camera.orthographic_size / 5)
         new_pos = (self.mouse_to_window() / 4) * Input.get_mouse_scroll()

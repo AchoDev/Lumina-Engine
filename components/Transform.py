@@ -24,7 +24,7 @@ class Transform(Component):
         if(self.target.b2Body == None): return
 
         self.b2Body = target.b2Body
-        self.b2Body.position.Set(self._x, self._y)
+        self.b2Body.position.Set(self._x, -self._y)
         
 
     @property
@@ -45,14 +45,14 @@ class Transform(Component):
     def y(self):
         if(self.b2Body == None):
             return self._y
-        return self.b2Body.position.y
+        return -self.b2Body.position.y
     
     @y.setter
     def y(self, yPos):
         if(self.b2Body == None):
             self._y = yPos
             return
-        self.b2Body.position = (self.b2Body.position.x, yPos)
+        self.b2Body.position = (self.b2Body.position.x, -yPos)
 
     @property
     def width(self):

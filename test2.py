@@ -46,10 +46,13 @@ b3.add_component(Boxcollider())
 # b4.add_component(Boxcollider())
 # b4.add_component(DragAround())
 
+debug_cube = scene.add_object(Square(0, 0, 0.5, 0.5, black))
+
 canvas = scene.add_object(Canvas())
 
 console.watch(lambda: b.transform.position.rounded(), "b pos")
 console.watch(lambda: scene.mouse_to_window().rounded(), "mtw")
+console.watch(lambda: scene.mouse_to_world().rounded(), "mtworld")
 console.watch(lambda: scene.camera.transform.position.rounded(), "cam pos")
 
 while True:
@@ -63,7 +66,7 @@ while True:
         new.add_component(Rigidbody())
         new.add_component(Boxcollider())
 
-    # debug_cube.transform.set_position(mouse_pos)
+    debug_cube.transform.set_position(mouse_pos)
 
     scene.load()
 
