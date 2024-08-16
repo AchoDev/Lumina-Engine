@@ -53,6 +53,9 @@ console.watch(lambda: scene.mouse_to_window().rounded(), "mtw")
 console.watch(lambda: scene.camera.transform.position.rounded(), "cam pos")
 
 while True:
+
+    console.log(repr(b.b2Body.linearVelocity))
+
     mouse_pos = scene.camera.window_to_world_position(get_mouse_pos())
 
     if(get_key('a')):

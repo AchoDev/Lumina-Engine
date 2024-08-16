@@ -176,12 +176,14 @@ class Window:
 
         ot = Transform.from_transform(obj.transform) # ot -> original transform
 
+        obj_tf.y *= -1
+
         obj_tf.x -= self.current_camera.transform.x - (self.width / ratio) / 2
         obj_tf.y += self.current_camera.transform.y + (self.height / ratio) / 2
 
         obj_tf.x -= obj_tf.width / 2
         obj_tf.y -= obj_tf.height / 2
-# 
+
         obj_tf.x *= ratio
         obj_tf.y *= ratio
 

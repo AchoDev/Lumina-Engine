@@ -7,11 +7,14 @@ import asyncio, delta_time
 __print_list = []
 __watch_list_c = [] # c -> container
 __watch_list = []
-max_log_count = 100
+max_log_count = 5
 
 def log(string):
 
     __print_list.insert(0, string)
+
+    if len(__print_list) > max_log_count:
+        __print_list.pop()
 
     # def remove_entry():
     #     __print_list.remove(string)
