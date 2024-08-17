@@ -29,3 +29,8 @@ class Camera(GameObject):
         winPoxY = ((self.transform.height - pos.y) / pixel_per_meter) - (self.transform.height / pixel_per_meter) / 2
 
         return Vector2(winPosX, winPoxY)
+    
+    def draw(self, window):
+        super().draw(window)
+        window.draw_rect(self, (230, 100, 200), width=3)
+        

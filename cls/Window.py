@@ -46,6 +46,8 @@ class Window:
         self.__editor_mouse_event = Container()
         self.__editor_selected_object = None
 
+        self.__editor_cam = Camera(0, 0, width, height)
+
         self.__object_viewer = EObjectViewer()
         self.__inspector = EInspector()
 
@@ -136,6 +138,9 @@ class Window:
             
         return (x_res, y_res)
 
+    def update_cam_pos(self):
+        pass
+
     def draw_many(self, objects, camera):
         for object in objects:
             if(not object.active): continue
@@ -173,7 +178,7 @@ class Window:
 
         obj.check_click(self, self.__current_scene.mouse_to_world())
         
-        if(obj == camera): return
+        # if(obj == camera): return
 
         self.current_camera = camera
         window_ratio.change(self.height / (self.current_camera.orthographic_size * 2))
@@ -240,23 +245,21 @@ class Window:
 
             new_tr.x += self.__editor_x
             # new_tr.y -= self.__editor_y
-
             
             new_tr.width *= ratio
             new_tr.height *= ratio
 
-
         return new_tr
 
-    def draw_rect(self, obj, color, alpha=255):
+    def draw_rect(self, obj, color, alpha=255, width=0):
         
         t = self.__editor_view_transform(obj.transform)
 
-        if alpha == 255 and t.angle == 0:
+        if alpha == 255 and t.angle == 0 and width == 0:
             rect = pygame.Rect(t.x, t.y, t.width, t.height)
             pygame.draw.rect(self.win, color, rect, 2 if obj.is_hollow else 0 ,border_radius=obj.border_radius)
         else:
-            s = pygame.Surface(t.get_size().to_tuple(), pygame.SRCALPHA)
+            s = pygame.Surface(t.get_size().to_tuple(), pygame.SRCALPHA, width)
             s.set_alpha(alpha)
             s.fill(color)
             s = pygame.transform.rotate(s, -t.angle)
@@ -322,12 +325,12 @@ class Window:
 
         window_ratio.change(self.width / self.current_camera.transform.width / self.current_camera.orthographic_size)
 
-    def set_attr(self, scale, canvas):
+    def set_attr(self, scale, canvas, display=0):
         self.width = scale[0]
         self.height = scale[1]
         self.canvas_size = canvas
 
-        self.win = pygame.display.set_mode(scale, pygame.RESIZABLE, 0, display=0)
+        self.win = pygame.display.set_mode(scale, pygame.RESIZABLE, 0, display=display)
         pygame.display.set_caption('Lumina-Engine window')
 
 
@@ -351,6 +354,7 @@ class Window:
     
     def __set_editor_selected_object(self, obj):
         self.__editor_selected_object = obj
+        obj.selected = True
 
     def update_editor_view(self):
         if(self.editor_view):

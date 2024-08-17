@@ -121,7 +121,10 @@ class Scene:
                 object.update()
 
 
-        WIN.fill(self.background_color)
+        if not WIN.editor_view:    
+            WIN.fill(self.background_color)
+        else:
+            WIN.fill((200, 200, 200))
 
         self.update_dimensions()
 

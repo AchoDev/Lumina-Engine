@@ -18,7 +18,7 @@ class EObjectViewer(EditorComponent):
     def update(self, mouse_event):
         if(self.scene == None): return
         if(self.buttons == []):
-            self.buttons = [EObjectButton(obj.__class__.__name__, lambda: self.onclick(obj)) for obj in self.scene.objects]
+            self.buttons = [EObjectButton(obj.__class__.__name__, lambda obj=obj: self.onclick(obj)) for obj in self.scene.objects]
 
         # if(len(self.buttons) != len(self.scene.objects)):
         #     for obj in self.scene.objects[ len(self.scene.objects) - len(self.buttons) : len(self.scene.objects) ]:
@@ -67,7 +67,7 @@ class EObjectButton(EditorComponent):
                 self.clicked = True
         else:
             self.clicked = False
-            if(collidepoint(mouse_pos, (self.x, self.y, self.width, self.height))):
+            if(collidepoint(mouse_pos, (self.x, self.y, self.width, self.height))): 
                 self.hovered = True
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                 mouse_event.value = self

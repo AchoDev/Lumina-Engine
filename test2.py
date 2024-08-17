@@ -2,8 +2,8 @@ from typing import Any
 from __init__ import *
 from enum import Enum
 
-window_dim = (1600, 900)
-init(window_dim)
+window_dim = (1100, 700)
+init(window_dim, display=1)
 
 scene = Scene("t")
 scene.fill(light_blue)

@@ -1,7 +1,7 @@
 
 from __init__ import * # LUMINA ENGINE IMPORT
 
-init((800, 800))
+init((1100, 700), display=1)
 
 scene = Scene('main screen')
 scene.fill(light_blue)
